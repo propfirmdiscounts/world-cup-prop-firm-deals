@@ -1,0 +1,629 @@
+name: Sync
+
+on:
+  schedule:
+    # Each repo gets its own minute (40 1-23/6 * * *) instead of every mirror firing at
+    # the same time. 11 repos on one minute read as a bulk burst to any host
+    # watching commit patterns. The hour phase is offset from the per-firm
+    # mirrors' so a shared minute is never the same wall-clock moment.
+    - cron: '40 1-23/6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+env:
+  EVENT_SLUG: "world-cup"
+  EVENT_NAME: "World Cup"
+  REPO_NAME: "world-cup-prop-firm-deals"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch event dataset
+        run: |
+          set -euo pipefail
+          BUST="cb=$(date +%s)"
+          # One request carries the whole thing: the event index (tagged counts,
+          # firm counts, newest date) and every deal row of every event. The
+          # builder selects this repo's event out of it. --compressed is not
+          # optional: the origin answer is brotli, and without it curl writes
+          # compressed bytes to disk.
+          curl -sf --compressed --retry 3 --retry-delay 30 \
+            "https://propfirmdiscount.com/api/prop-firm-events/?$BUST" \
+            -o events.json
+
+      - name: Generate README
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json, os, re
+
+          EVENT_SLUG = os.environ['EVENT_SLUG']
+          EVENT_NAME = os.environ['EVENT_NAME']
+          REPO_NAME = os.environ['REPO_NAME']
+
+          # State an offer the way the site states it. A percentage gets "off";
+          # anything else (a price, a BOGO, a freebie) is already a complete
+          # phrase and is printed as written. Appending "off" to "Only $69"
+          # would invent a sentence the firm never wrote.
+          PCT = re.compile(r'^\d+(?:\.\d+)?%$')
+
+          def offer(v):
+              v = (v or '').strip()
+              if not v:
+                  return 'N/A'
+              return v + ' off' if PCT.match(v) else v
+
+          def plural(n, word):
+              return f'{n} {word}' if n == 1 else f'{n} {word}s'
+
+          def expiry(v):
+              """Expiry as a sentence fragment. "Ended" is a state, not a date,
+              so it cannot follow "Offer ends:" without reading as broken."""
+              v = (v or '').strip()
+              if not v:
+                  return 'Offer ends: N/A.'
+              if v.lower() == 'ended' or v.lower().endswith('(ended)'):
+                  return 'Offer has ended.'
+              return f'Offer ends: {v}.'
+
+          def pct(v):
+              """Numeric rate for ranking, or None when the firm states no rate."""
+              v = (v or '').strip()
+              if not PCT.match(v):
+                  return None
+              return float(v[:-1])
+
+          data = json.load(open('events.json', encoding='utf-8'))
+
+          meta = next((e for e in data['events'] if e.get('slug') == EVENT_SLUG), None)
+          if meta is None:
+              # The event vanished from the index. Publishing a repo whose
+              # subject no longer exists would leave stale offers in place, so
+              # stop and let the run go red instead.
+              raise SystemExit(f'event {EVENT_SLUG!r} not in the dataset index')
+
+          rows = [r for r in data['data'] if r.get('event') == meta['name']]
+          if not rows:
+              raise SystemExit(f'event {EVENT_NAME!r} has no deals with a code')
+
+          # Newest first, deal id breaking ties. Same rule the endpoint sorts
+          # by, applied here so the printed order is settled by the data alone
+          # and two runs of an unchanged dataset produce identical bytes.
+          rows.sort(key=lambda r: (r['date_published'], r['deal_id']), reverse=True)
+
+          deals = len(rows)
+          dates = [r['date_published'] for r in rows]
+          newest_date = max(dates)
+          newest = rows[0]
+
+          per_year = {}
+          for r in rows:
+              per_year.setdefault(r['date_published'][:4], []).append(r)
+          years = sorted(per_year, reverse=True)
+
+          # "This year" is the date the endpoint stamped its snapshot with, not
+          # the clock: the stamp ships inside the payload, so two runs over the
+          # same dataset produce the same year, and the value moves at most once
+          # a year instead of on every run.
+          now_year = int(data['generated'][:4])
+
+          def is_season(part):
+              """A season is several firms running the same campaign. One firm
+              re-tagging an evergreen offer into the event is not one, and a
+              heading for it would advertise a campaign nobody has run."""
+              return len({r['prop_firm_slug'] for r in part}) >= 2
+
+          # The year the top table ranks. When this year's season has not begun,
+          # ranking it would print offers under a heading for an event that has
+          # not happened, so the table falls back to the last season that did
+          # run and the body says which one it is. A code is unaffected either
+          # way: the standing codes work any time, season or not.
+          season_open = is_season(per_year.get(str(now_year), []))
+          if season_open:
+              season_year = now_year
+          else:
+              ran = [int(y) for y in years if int(y) < now_year and is_season(per_year[y])]
+              season_year = max(ran) if ran else max(int(y) for y in years)
+          this_year = per_year.get(str(season_year), [])
+
+          # One row per firm, ranked by the rate its standing code gives.
+          firms = {}
+          for r in rows:
+              firms.setdefault(r['prop_firm_slug'], r)
+          # The ranking covers this season only. An event happens once a year,
+          # so a deal from an earlier year is a different offer from a
+          # different campaign: printing a 2025 rate under a 2026 heading would
+          # claim a price at which nothing is on sale now. Older seasons stay
+          # in the history below, where the date beside each row says what it
+          # is. Firms that state no rate are left out rather than printed with
+          # a dash: this table answers "how much is off", and a firm with no
+          # published rate has nothing to rank. Ties break on name so the order
+          # is settled without reference to the clock or to dict order.
+          season = {}
+          for r in this_year:
+              season.setdefault(r['prop_firm_slug'], r)
+
+          # The table ranks the standing codes, so its rate is the code's own
+          # and identical on every row of a firm — see the column notes below.
+          ranked = []
+          for r in season.values():
+              rate = pct(r.get('standing_discount'))
+              if rate is None:
+                  continue
+              ranked.append((rate, r))
+          ranked.sort(key=lambda t: (-t[0], t[1]['prop_firm']))
+          # The prose names five because that is as many as a sentence can carry
+          # without turning into a list; the table prints ten because a table has
+          # no such limit and each row is another code-bearing firm on the page.
+          top = ranked[:5]
+          top_table = ranked[:10]
+
+          # The sentence is about the season, not about today, so a season that
+          # has closed has to state the rate it actually sold at: the last deal
+          # it ran. Printing today's code rate under a closed season's name
+          # advertises a price that season never offered — Christmas 2025 ran at
+          # 85% off while the same code reads 90% now. Only a global firm's deal
+          # redeems the firm's own standing code (the endpoint marks those rows
+          # with code/code_state), so only there can a rate and a code be named
+          # together without pairing a code with a discount it does not give; a
+          # non-global deal ran on a campaign code this dataset does not carry,
+          # and its standing code is a different, unrelated rate.
+          if season_open:
+              prose = top
+          else:
+              prose = []
+              for r in season.values():
+                  if 'code' not in r:
+                      continue
+                  rate = pct(r.get('discount_value'))
+                  if rate is None:
+                      continue
+                  prose.append((rate, r))
+              prose.sort(key=lambda t: (-t[0], t[1]['prop_firm']))
+              prose = prose[:5]
+
+          def rate_text(rate):
+              return f'{rate:g}%'
+
+          if len(prose) >= 2:
+              parts = [f"{rate_text(rate)} OFF with code {r['standing_code']} at {r['prop_firm']}"
+                       for rate, r in prose[:-1]]
+              biggest = ', '.join(parts) + f", and {rate_text(prose[-1][0])} OFF with code " \
+                                            f"{prose[-1][1]['standing_code']} at {prose[-1][1]['prop_firm']}"
+          elif prose:
+              rate, r = prose[0]
+              biggest = f"{rate_text(rate)} OFF with code {r['standing_code']} at {r['prop_firm']}"
+          else:
+              biggest = ''
+
+          readme = f"""# {EVENT_NAME} Prop Firm Discount Codes ({now_year})
+
+          """
+
+          # The head paragraph answers the query in one sentence: how many deals,
+          # from how many firms, and what a reader gets for staying. The season
+          # count is stated separately because the table below ranks one season,
+          # not the archive: an event happens once a year, so a reader looking
+          # for a code now cares what is on sale in a single season, and the
+          # earlier campaigns are searchable in the history further down.
+          # The newest deal is held back until after the code table: a search
+          # visitor came for a code, so the codes come first and the dated offer
+          # second.
+          readme += (f"As of {newest_date}, {deals} {EVENT_NAME} deals from "
+                     f"{len(firms)} prop firms are tracked, {len(this_year)} of them "
+                     f"published in the {season_year} season. Every firm below carries a "
+                     f"verified discount code that works any time.\n\n")
+
+          if not season_open:
+              # The title names the season a reader is searching for, so the body
+              # has to say plainly that it has not begun and what it is showing
+              # instead. Without this the page reads as a {now_year} lineup built
+              # from a stray re-tagged deal. The window is quoted from the last
+              # season's own rows rather than predicted, so the page never guesses
+              # when this year's campaign starts — but a reader still gets a date
+              # to come back to, and the codes work meanwhile. The count of deals
+              # already dated {now_year} is stated too: a reader who sees a
+              # September-dated row above needs to know it is an early posting
+              # rather than the season opening.
+              first = min(r['date_published'] for r in this_year)
+              last = max(r['date_published'] for r in this_year)
+              early = len(per_year.get(str(now_year), []))
+              readme += (f"**The {EVENT_NAME} {now_year} season is coming soon.** "
+                         f"The last season that ran was {season_year}: "
+                         f"{plural(len(this_year), 'deal')} from "
+                         f"{plural(len(season), 'firm')}, published {first} to {last}. ")
+              if early:
+                  readme += (f"{plural(early, 'deal')} dated {now_year} "
+                             f"{'has' if early == 1 else 'have'} been posted so far, "
+                             f"and {'it is' if early == 1 else 'they are'} in the history below. ")
+              readme += (f"Discount codes are not seasonal — every one below works today — "
+                         f"and new {now_year} {EVENT_NAME} deals appear here as they are "
+                         f"published, so check back for the lineup.\n\n")
+
+          if biggest:
+              # Naming the event and the season in this sentence is what makes
+              # it match a "Halloween 2026 prop firm discount code" query rather
+              # than a generic "biggest discount code" one; it sits above the
+              # table for the same reason. The season named is the one the table
+              # actually ranks, so heading and sentence cannot disagree.
+              readme += (f"The biggest verified {EVENT_NAME} discount codes in the "
+                         f"{season_year} season are {biggest}.\n\n")
+
+              # Two rates, two columns. "Code discount" is what the standing
+              # code gives and it is the same number on every row of that firm,
+              # because it belongs to the code. "Deal discount" is what this
+              # particular campaign stated, and it is the deal title's own
+              # figure. They are unrelated: a code can give 30% while the deal
+              # beside it advertised 60%. Printing one under the other's
+              # heading — or ranking by the code and showing only the deal —
+              # states a rate at which nothing is actually on sale, which is
+              # the one thing this table must never do.
+              #
+              # "(Current)" is on the code column because every deal beside it
+              # has ended and its rate is history, while the code's rate is
+              # what a reader gets today. Without the word, two percentages on
+              # one row read as the same fact stated twice, and the reader has
+              # to work out which one they can still use.
+              readme += f"""## Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}
+
+          | # | Prop firm | Exclusive code | Code discount (Current) | Latest {EVENT_NAME} deal | Deal discount | Expires | Firm page |
+          |---|---|---|---|---|---|---|---|
+          """
+              for i, (rate, r) in enumerate(top_table, 1):
+                  # The deal title and its expiry are what make the row checkable:
+                  # a rate with no offer behind it is a number a reader has to
+                  # take on trust, while a named deal and a date can be looked up
+                  # in the history below. The expiry is the deal's own, not a
+                  # standing-code lifetime.
+                  title = str(r['title']).replace('|', '\\|')
+                  readme += (f"| {i} | {r['prop_firm']} | {r['standing_code']} | "
+                             f"{rate_text(rate)} | {title} | "
+                             f"{offer(r.get('discount_value'))} | "
+                             f"{r.get('date_exp') or 'N/A'} | {r['firm_page_url']} |\n")
+              readme += "\n"
+
+          readme += (f"The newest is **{newest['title']}** from {newest['prop_firm']} — "
+                     f"{offer(newest['discount_value'])}.\n\n")
+
+          readme += f"""- Event: {EVENT_NAME}
+          - Deals tracked: {deals} ({len(this_year)} in {season_year})
+          - Firms: {len(firms)}
+          - Firms with a code in the {season_year} season: {len(season)}
+          - Newest deal: {newest_date}
+          """
+          if meta.get('tagged'):
+              # The gap between these two numbers is the point of stating both:
+              # an event is bigger than the part of it that comes with a code.
+              readme += (f"- Deals tagged on the site: {meta['tagged']} "
+                         f"({deals} of them from firms with a verified code, listed below)\n")
+          if meta.get('tag_url'):
+              readme += f"- Event page: {meta['tag_url']}\n"
+          readme += ("- Full dataset: https://github.com/propfirmdiscounts/prop-firm-discount-codes\n"
+                     "- Deal dataset: https://propfirmdiscount.com/api/prop-firm-events/\n\n")
+
+          # FAQ headings phrased as the questions people type. Every answer is
+          # assembled from fields above; nothing is asserted that the dataset
+          # does not carry.
+          readme += f"""## {EVENT_NAME} prop firm deals FAQ
+
+          **What is the newest {EVENT_NAME} prop firm deal?**
+
+          **{newest['title']}** from {newest['prop_firm']} — published {newest['date_published']}. \
+          Offer: {offer(newest['discount_value'])}. {expiry(newest.get('date_exp'))}
+
+          **Do these firms have discount codes?**
+
+          Yes. Every one of the {len(firms)} firms listed here carries a verified discount code \
+          that works any time, with no start date and no end date. """
+          if top:
+              readme += (f"The biggest is {rate_text(top[0][0])} off with code "
+                         f"{top[0][1]['standing_code']} at {top[0][1]['prop_firm']}. "
+                         f"The code is separate from the {EVENT_NAME} offer itself: the offer belongs to "
+                         f"the campaign, the code works whatever the season.\n\n")
+          else:
+              readme += "The event offers themselves are separate from these codes.\n\n"
+
+          readme += f"""**How much is off?**
+
+          The newest deal is {offer(newest['discount_value'])}. """
+          if top:
+              readme += (f"Standing discount codes among these firms run up to "
+                         f"{rate_text(top[0][0])} off, and every deal in the history below "
+                         f"states its own figure.\n\n")
+          else:
+              readme += "Every deal in the history below states its own figure.\n\n"
+
+          readme += f"""---
+
+          ## {EVENT_NAME} deal history
+
+          Total deals tracked: **{deals}**
+
+          """
+
+          for y in years:
+              group = per_year[y]
+              readme += f"### {y} ({plural(len(group), 'deal')})\n\n"
+              readme += "| Deal Date | Firm | Title | Discount | Expires | Event | Deal Link |\n"
+              readme += "|---|---|---|---|---|---|---|\n"
+              for r in group:
+                  title = r['title'].replace('|', '\\|')
+                  readme += (f"| {r['date_published']} | {r['prop_firm']} | {title} | "
+                             f"{offer(r['discount_value'])} | {r.get('date_exp') or 'N/A'} | "
+                             f"{r.get('event') or '—'} | [View Deal]({r['post_url']}) |\n")
+              readme += "\n"
+
+          readme += f"""---
+
+          ## About this repository
+
+          This repository mirrors every **{EVENT_NAME}** deal published on PropFirmDiscount.com by a
+          firm carrying a verified discount code, regenerated from the live API.
+
+          A deal is listed here because an editor tagged it for {EVENT_NAME} on the site, not because
+          its dates fall near the event. A deal with no event tag appears in its firm's own dataset
+          instead: https://github.com/propfirmdiscounts
+
+          - Data source: https://propfirmdiscount.com
+          - Event page: {meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'}
+          - All firms: https://github.com/propfirmdiscounts/prop-firm-discount-codes
+
+          ## Fields in `datasets/{REPO_NAME}.json`
+
+          One row per deal. The first fields are the observation exactly as the
+          PropFirmDiscount API returns it; the firm's own code fields and the
+          links are appended after, in the order below.
+
+          | Field | Meaning |
+          |---|---|
+          | `deal_id` | The deal's id on PropFirmDiscount. |
+          | `title` | The deal's headline. |
+          | `offer_type` | The kind of offer as recorded on the site. |
+          | `discount_value` | How this deal is stated on the site, in whatever form the firm uses: a percentage (`50%`), a price (`$39`), a BOGO (`Buy 1 Get 1`), a freebie (`Free Reset`). Not the code's rate. |
+          | `scope` | What the deal covers. |
+          | `date_published` | The date this deal went live. |
+          | `date_exp` | Expiry as the site states it: an ISO date, `Limited time`, or `Ended`. |
+          | `event` | The seasonal campaign this deal was tagged with on the site. Every row in this file carries the same value. The event never changes what the deal is worth — it names the occasion the deal was run for. |
+          | `last_verified` | The date this deal's details were last checked. |
+          | `post_url` | This deal's page on PropFirmDiscount. A deal carrying its own campaign code shows that code there. |
+          | `prop_firm` | Firm name. |
+          | `prop_firm_slug` | Firm slug. |
+          | `standing_code` | The firm's discount code. It works any time, has no end date, and is identical on every row of that firm because it belongs to the firm rather than to the dated deal on that row. |
+          | `standing_discount` | The rate `standing_code` gives today: the code's own rate, not the rate of the dated deal on the same row. It is the `Code discount (Current)` figure in the table above. A code keeps giving it after the deal beside it has expired. |
+          | `activation_link` | Where to redeem `standing_code`. |
+          | `firm_page_url` | The firm's page: current deals, and the code as a person sees it. |
+          | `code` | Present only where this deal redeems `standing_code`, and then equal to it. Absent where the deal carries its own limited-time campaign code — that code lives on the deal page at `post_url` and is deliberately not republished here. |
+          | `code_state` | `standing` where `code` is present. |
+
+          To state one of these offers: the code is `standing_code`, worth
+          `standing_discount`, redeemed at `activation_link`. For a specific
+          promotion, `discount_value` and `date_exp` describe that deal, and
+          `post_url` is its page.
+
+          ## Freshness
+
+          The deal history above is the source of truth for what changed and when.
+          Standing codes are re-verified by the PropFirmDiscount team; campaign
+          codes come and go with each promotion. The most recent deal date carried
+          in this file is the `Newest deal` value above.
+
+          ## License
+
+          Data © PropFirmDiscount. Codes may be referenced with attribution and a link to https://propfirmdiscount.com.
+          """
+
+          with open('README.md', 'w', encoding='utf-8') as f:
+              f.write(readme)
+
+          # The dataset is a real data file, not markdown: a mirror that holds
+          # nothing but promotional pages reads as repo stuffing under the Hub
+          # content policy. Fields keep the order the API emits them in, so a
+          # reader can diff a row against the endpoint response directly.
+          os.makedirs('datasets', exist_ok=True)
+          with open(f'datasets/{REPO_NAME}.json', 'w', encoding='utf-8') as f:
+              json.dump(rows, f, ensure_ascii=False, indent=2)
+
+          # Hand the resolved values to the next step so llms.txt / ai.txt quote
+          # the same figures as the README and the dataset.
+          gh_env = os.environ.get('GITHUB_ENV')
+          if gh_env:
+              with open(gh_env, 'a', encoding='utf-8') as f:
+                  f.write(f"RESOLVED_DEALS={deals}\n")
+                  f.write(f"RESOLVED_FIRMS={len(firms)}\n")
+                  f.write(f"RESOLVED_NEWEST={newest_date}\n")
+          PY
+
+          # Build input only — the repo holds data and documentation.
+          rm -f events.json
+
+      - name: Generate discovery files
+        run: |
+          set -euo pipefail
+
+          DEALS="${RESOLVED_DEALS:?}"
+          FIRMS="${RESOLVED_FIRMS:?}"
+          NEWEST="${RESOLVED_NEWEST:?}"
+          TAG_URL="https://propfirmdiscount.com/tag/$EVENT_SLUG/"
+
+          cat > llms.txt << EOF
+          # $EVENT_NAME Prop Firm Deals
+
+          This dataset tracks every $EVENT_NAME deal published on PropFirmDiscount.com by a
+          prop firm carrying a verified discount code.
+
+          Deals tracked: $DEALS across $FIRMS firms. Newest deal: $NEWEST.
+          Every deal row carries that firm's discount code, which works any time.
+
+          Event page: $TAG_URL
+          Event dataset: https://propfirmdiscount.com/api/prop-firm-events/
+          Deal rows for this event: https://github.com/propfirmdiscounts/$REPO_NAME
+          All firms: https://github.com/propfirmdiscounts/prop-firm-discount-codes
+          EOF
+
+          cat > ai.txt << EOF
+          # $EVENT_NAME - PropFirmDiscount.com
+
+          $EVENT_NAME prop firm deals and the discount codes of the firms that ran them.
+
+          ## Dataset
+
+          $DEALS deals from $FIRMS prop firms, newest $NEWEST.
+          Each row states the deal, its dates, the firm's discount code, and where to redeem it.
+
+          ## Links
+
+          - Event page: $TAG_URL
+          - Event dataset: https://propfirmdiscount.com/api/prop-firm-events/
+          - All firms: https://github.com/propfirmdiscounts/prop-firm-discount-codes
+          EOF
+
+          cat > LICENSE <<'EOF'
+          Copyright (c) 2026 PropFirmDiscount. All rights reserved.
+
+          PROP FIRM DISCOUNT DATA LICENSE
+
+          This repository contains the PropFirmDiscount dataset for a single seasonal
+          event — its tagged deal records, discount codes and markdown mirrors
+          (collectively, "the Data").
+
+          1. THE DATA
+
+          The Data is provided for reference and informational use only.
+
+          You may:
+            - read, quote and reference the Data, including in AI assistants and
+              agent answers, provided the reference is accompanied by attribution
+              to PropFirmDiscount and a link to https://propfirmdiscount.com;
+            - retrieve the Data programmatically through the public endpoints and
+              mirror files documented in README.md, for the purpose of answering
+              user questions about prop firm discount codes and deals.
+
+          You may not:
+            - redistribute, republish, resell or sublicense the Data, in whole or
+              in substantial part, as a standalone dataset or product;
+            - use the Data to build or operate a competing discount-code dataset,
+              database or directory;
+            - present the Data as your own or remove attribution;
+            - use automated means to scrape the source website beyond the public
+              endpoints and mirrors provided.
+
+          2. NO WARRANTY
+
+          The Data is provided "as is", without warranty of any kind, express or
+          implied, including but not limited to the warranties of merchantability,
+          fitness for a particular purpose and noninfringement. Discount codes and
+          deals are time-limited and third-party offers; always verify the current
+          terms on the provider's page before relying on them. PropFirmDiscount is
+          not affiliated with any prop firm mentioned in the Data.
+
+          3. CONTACT
+
+          For licensing requests, contact support@propfirmdiscount.com.
+          EOF
+
+          # Hugging Face dataset card: frontmatter + README body
+          python3 - <<'PY'
+          import os
+
+          slug = os.environ['EVENT_SLUG']
+          name = os.environ['EVENT_NAME']
+          repo_name = os.environ['REPO_NAME']
+          front = ('---\n'
+                   'license: other\n'
+                   'pretty_name: ' + name + ' Prop Firm Deals\n'
+                   'configs:\n'
+                   '- config_name: ' + repo_name + '\n'
+                   '  data_files:\n'
+                   '  - split: data\n'
+                   '    path: datasets/' + repo_name + '.json\n'
+                   'tags:\n'
+                   '  - prop-firm\n'
+                   '  - prop-firm-deals\n'
+                   '  - discount-code\n'
+                   '  - coupon-code\n'
+                   '  - promo-code\n'
+                   '  - funded-trader\n'
+                   '  - trading\n'
+                   '  - ' + slug + '\n'
+                   '---\n\n')
+          readme_content = open('README.md', encoding='utf-8').read()
+          with open('hf-card.md', 'w', encoding='utf-8') as f:
+              f.write(front + readme_content)
+          PY
+
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          # Every date written above comes from the data, so an unchanged
+          # dataset produces byte-identical files and this guard stops the run
+          # without a commit. A scheduled job that commits nothing is invisible;
+          # one that commits an empty diff back to 11 repos is bulk activity.
+          if git diff --cached --quiet; then
+            echo "no changes"
+            exit 0
+          fi
+          git commit -m "Sync $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            -m "Update $EVENT_NAME deal history and README"
+          git push
+
+      - name: Push Hugging Face mirror
+        if: env.HF_TOKEN != ''
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -euo pipefail
+          pip install --quiet 'huggingface_hub>=0.20'
+          python3 - <<'PY'
+          import os
+          from huggingface_hub import HfApi, CommitOperationAdd
+
+          api = HfApi(token=os.environ['HF_TOKEN'])
+          repo_id = f"propfirmdiscounts/{os.environ['REPO_NAME']}"
+
+          # Surface a missing dataset repo as a warning annotation instead of
+          # passing silently, while leaving the GitHub mirror step unaffected.
+          try:
+              api.repo_info(repo_id=repo_id, repo_type='dataset')
+          except Exception:
+              print(f"::warning::HF dataset {repo_id} does not exist - skipping upload")
+              raise SystemExit(0)
+
+          # One commit for the whole mirror. Uploading the folder and then each
+          # file separately wrote several commits per run, all carrying the same
+          # data — the kind of repeated bulk activity the Hub treats as spam.
+          ops = []
+          for root, _, files in os.walk('datasets'):
+              for name in files:
+                  src = os.path.join(root, name)
+                  ops.append(CommitOperationAdd(
+                      path_in_repo=src.replace(os.sep, '/'),
+                      path_or_fileobj=src,
+                  ))
+          for f in ['llms.txt', 'ai.txt']:
+              if os.path.exists(f):
+                  ops.append(CommitOperationAdd(path_in_repo=f, path_or_fileobj=f))
+          if os.path.exists('hf-card.md'):
+              ops.append(CommitOperationAdd(
+                  path_in_repo='README.md', path_or_fileobj='hf-card.md'))
+
+          api.create_commit(
+              repo_id=repo_id,
+              repo_type='dataset',
+              operations=ops,
+              commit_message='Sync event deals',
+          )
+          PY
