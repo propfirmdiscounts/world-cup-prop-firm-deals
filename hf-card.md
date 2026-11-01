@@ -21,13 +21,13 @@ tags:
 
 As of 2026-07-18, 19 World Cup deals from 11 prop firms are tracked, 19 of them published in the 2026 season. Every firm below carries a verified discount code that works any time.
 
-The biggest verified World Cup discount codes in the 2026 season are 90% OFF with code PFD at Phidias Propfirm, 70% OFF with code PFD at Funding Traders, 35% OFF with code CSV at Goat Funded Trader, 25% OFF with code PFD at AquaFunded, and 25% OFF with code JACKICHUN at Finotive Funding.
+The biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, 70% OFF with code PFD at Funding Traders, 35% OFF with code CSV at Goat Funded Trader, 25% OFF with code PFD at AquaFunded, and 25% OFF with code JACKICHUN at Finotive Funding.
 
 ## Prop Firms with the Highest Discount Codes in World Cup 2026
 
 | # | Prop firm | Exclusive code | Code discount (Current) | Latest World Cup deal | Deal discount | Expires | Firm page |
 |---|---|---|---|---|---|---|---|
-| 1 | Phidias Propfirm | PFD | 90% | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts | 80% off | Ended | https://propfirmdiscount.com/prop-firm/phidias-propfirm/ |
+| 1 | Phidias Propfirm | PFD | 80% | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts | 80% off | Ended | https://propfirmdiscount.com/prop-firm/phidias-propfirm/ |
 | 2 | Funding Traders | PFD | 70% | World Cup 50% Off Evaluation Accounts and 100% Profit Split | 50% off | Ended | https://propfirmdiscount.com/prop-firm/fundingtraders/ |
 | 3 | Goat Funded Trader | CSV | 35% | 50% Off Upfront Fee World Cup Trading Challenge Deal | 50% off | Ended | https://propfirmdiscount.com/prop-firm/goat-funded-trader/ |
 | 4 | AquaFunded | PFD | 25% | World Cup Promotion: 40% Off Challenge Pricing | 40% off | Ended | https://propfirmdiscount.com/prop-firm/aquafunded/ |
@@ -58,11 +58,11 @@ The newest is **World Cup 50% Off Evaluation Accounts and 100% Profit Split** fr
 
 **Do these firms have discount codes?**
 
-Yes. Every one of the 11 firms listed here carries a verified discount code that works any time, with no start date and no end date. The biggest is 90% off with code PFD at Phidias Propfirm. The code is separate from the World Cup offer itself: the offer belongs to the campaign, the code works whatever the season.
+Yes. Every one of the 11 firms listed here carries a verified discount code that works any time, with no start date and no end date. The biggest is 80% off with code PFD at Phidias Propfirm. The code is separate from the World Cup offer itself: the offer belongs to the campaign, the code works whatever the season.
 
 **How much is off?**
 
-The newest deal is 50% off. Standing discount codes among these firms run up to 90% off, and every deal in the history below states its own figure.
+The newest deal is 50% off. Standing discount codes among these firms run up to 80% off, and every deal in the history below states its own figure.
 
 ---
 
