@@ -169,29 +169,26 @@ jobs:
           top = ranked[:5]
           top_table = ranked[:10]
 
-          # The sentence is about the season, not about today, so a season that
-          # has closed has to state the rate it actually sold at: the last deal
-          # it ran. Printing today's code rate under a closed season's name
-          # advertises a price that season never offered — Christmas 2025 ran at
-          # 85% off while the same code reads 90% now. Only a global firm's deal
-          # redeems the firm's own standing code (the endpoint marks those rows
-          # with code/code_state), so only there can a rate and a code be named
-          # together without pairing a code with a discount it does not give; a
-          # non-global deal ran on a campaign code this dataset does not carry,
-          # and its standing code is a different, unrelated rate.
-          if season_open:
-              prose = top
-          else:
-              prose = []
-              for r in season.values():
-                  if 'code' not in r:
-                      continue
-                  rate = pct(r.get('discount_value'))
-                  if rate is None:
-                      continue
-                  prose.append((rate, r))
-              prose.sort(key=lambda t: (-t[0], t[1]['prop_firm']))
-              prose = prose[:5]
+          # The sentence is about the season, not about today, so it states the
+          # rate from the actual event deal (discount_value), not the firm's
+          # standing code rate (standing_discount). Printing today's global code
+          # rate under a season's name advertises a price that season may not have
+          # offered. Only a global firm's deal redeems the firm's own standing
+          # code (the endpoint marks those rows with code/code_state), so only
+          # there can a rate and a code be named together without pairing a code
+          # with a discount it does not give; a non-global deal ran on a campaign
+          # code this dataset does not carry, and its standing code is a
+          # different, unrelated rate.
+          prose = []
+          for r in season.values():
+              if 'code' not in r:
+                  continue
+              rate = pct(r.get('discount_value'))
+              if rate is None:
+                  continue
+              prose.append((rate, r))
+          prose.sort(key=lambda t: (-t[0], t[1]['prop_firm']))
+          prose = prose[:5]
 
           def rate_text(rate):
               return f'{rate:g}%'
@@ -277,7 +274,7 @@ jobs:
               # to work out which one they can still use.
               readme += f"""## Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}
 
-          | # | Prop firm | Exclusive code | Code discount (Current) | Latest {EVENT_NAME} deal | Deal discount | Expires | Firm page |
+          | # | Prop firm | Exclusive code | Code discount (Standing) | Latest {EVENT_NAME} deal | Deal link | Expires | Firm page |
           |---|---|---|---|---|---|---|---|
           """
               for i, (rate, r) in enumerate(top_table, 1):
@@ -286,10 +283,20 @@ jobs:
                   # take on trust, while a named deal and a date can be looked up
                   # in the history below. The expiry is the deal's own, not a
                   # standing-code lifetime.
+                  #
+                  # "Code discount (Standing)" column: for global firms (code_state
+                  # present), the deal redeems the standing code, so show the
+                  # deal's own discount_value. For non-global firms, the deal ran
+                  # on a campaign code we don't carry, so show the standing code's
+                  # rate (standing_discount) — what the code gives today.
                   title = str(r['title']).replace('|', '\\|')
+                  code_rate = pct(r.get('discount_value')) if 'code_state' in r else rate
+                  # Fallback to rate (standing_discount) if code_rate is None
+                  if code_rate is None:
+                      code_rate = rate
                   readme += (f"| {i} | {r['prop_firm']} | {r['standing_code']} | "
-                             f"{rate_text(rate)} | {title} | "
-                             f"{offer(r.get('discount_value'))} | "
+                             f"{rate_text(code_rate)} | {title} | "
+                             f"[View Deal]({r['post_url']}) | "
                              f"{r.get('date_exp') or 'N/A'} | {r['firm_page_url']} |\n")
               readme += "\n"
 
@@ -400,11 +407,9 @@ jobs:
           | `prop_firm` | Firm name. |
           | `prop_firm_slug` | Firm slug. |
           | `standing_code` | The firm's discount code. It works any time, has no end date, and is identical on every row of that firm because it belongs to the firm rather than to the dated deal on that row. |
-          | `standing_discount` | The rate `standing_code` gives today: the code's own rate, not the rate of the dated deal on the same row. It is the `Code discount (Current)` figure in the table above. A code keeps giving it after the deal beside it has expired. |
+          | `standing_discount` | The rate `standing_code` gives today: the code's own rate, not the rate of the dated deal on the same row. It is the `Code discount (Standing)` figure in the table above. A code keeps giving it after the deal beside it has expired. |
           | `activation_link` | Where to redeem `standing_code`. |
           | `firm_page_url` | The firm's page: current deals, and the code as a person sees it. |
-          | `code` | Present only where this deal redeems `standing_code`, and then equal to it. Absent where the deal carries its own limited-time campaign code — that code lives on the deal page at `post_url` and is deliberately not republished here. |
-          | `code_state` | `standing` where `code` is present. |
 
           To state one of these offers: the code is `standing_code`, worth
           `standing_discount`, redeemed at `activation_link`. For a specific
@@ -428,11 +433,29 @@ jobs:
 
           # The dataset is a real data file, not markdown: a mirror that holds
           # nothing but promotional pages reads as repo stuffing under the Hub
-          # content policy. Fields keep the order the API emits them in, so a
-          # reader can diff a row against the endpoint response directly.
+          # content policy. Remove code/code_state fields from output - they are
+          # internal markers not needed in the public dataset.
+          field_order = [
+              'deal_id', 'prop_firm', 'prop_firm_slug', 'title', 'event',
+              'offer_type', 'scope', 'discount_value',
+              'standing_code', 'standing_discount', 'date_published', 'date_exp',
+              'post_url', 'firm_page_url'
+          ]
+          reordered = []
+          for r in rows:
+              ordered = {k: r[k] for k in field_order if k in r}
+              # Append any extra fields not in field_order (except code/code_state)
+              for k in r:
+                  if k not in ordered and k not in ('code', 'code_state'):
+                      ordered[k] = r[k]
+              reordered.append(ordered)
+
+          # Sort by date and deal_id for consistent order
+          reordered.sort(key=lambda r: (r['date_published'], r.get('deal_id', 0)), reverse=True)
+
           os.makedirs('datasets', exist_ok=True)
           with open(f'datasets/{REPO_NAME}.json', 'w', encoding='utf-8') as f:
-              json.dump(rows, f, ensure_ascii=False, indent=2)
+              json.dump(reordered, f, ensure_ascii=False, indent=2)
 
           # Hand the resolved values to the next step so llms.txt / ai.txt quote
           # the same figures as the README and the dataset.
