@@ -2,22 +2,22 @@
 
 As of 2026-07-18, 19 World Cup deals from 11 prop firms are tracked, 19 of them published in the 2026 season. Every firm below carries a verified discount code that works any time.
 
-The biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, 70% OFF with code PFD at Funding Traders, 35% OFF with code CSV at Goat Funded Trader, 25% OFF with code PFD at AquaFunded, and 25% OFF with code JACKICHUN at Finotive Funding.
+The biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, and 50% OFF with code PFD at Funding Traders.
 
 ## Prop Firms with the Highest Discount Codes in World Cup 2026
 
-| # | Prop firm | Exclusive code | Code discount (Current) | Latest World Cup deal | Deal discount | Expires | Firm page |
+| # | Prop firm | Exclusive code | Code discount (Standing) | Latest World Cup deal | Deal link | Expires | Firm page |
 |---|---|---|---|---|---|---|---|
-| 1 | Phidias Propfirm | PFD | 80% | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts | 80% off | Ended | https://propfirmdiscount.com/prop-firm/phidias-propfirm/ |
-| 2 | Funding Traders | PFD | 70% | World Cup 50% Off Evaluation Accounts and 100% Profit Split | 50% off | Ended | https://propfirmdiscount.com/prop-firm/fundingtraders/ |
-| 3 | Goat Funded Trader | CSV | 35% | 50% Off Upfront Fee World Cup Trading Challenge Deal | 50% off | Ended | https://propfirmdiscount.com/prop-firm/goat-funded-trader/ |
-| 4 | AquaFunded | PFD | 25% | World Cup Promotion: 40% Off Challenge Pricing | 40% off | Ended | https://propfirmdiscount.com/prop-firm/aquafunded/ |
-| 5 | Finotive Funding | JACKICHUN | 25% | 30% Off World Cup Special: Evaluation Accounts Up to $200K | 30% off | Ended | https://propfirmdiscount.com/prop-firm/finotive-funding/ |
-| 6 | TX3 Funding | PFDC | 25% | 30% Off All Evaluation Accounts ($5K - $300K) | 30% off | Ended | https://propfirmdiscount.com/prop-firm/tx3-funding/ |
-| 7 | FXIFY | FXIFY2WRIVW | 10% | 26% Off Evaluation and Instant Funding Entry Fees | 26% off | Ended | https://propfirmdiscount.com/prop-firm/fxify/ |
-| 8 | Forex Funds Flow | PFD | 10% | 15% Off All Evaluation Programs | 15% off | Ended | https://propfirmdiscount.com/prop-firm/forex-funds-flow/ |
-| 9 | Funded Elite | AFF1864062 | 10% | World Cup Promotion: Up to 40% Off Upfront Fees | 40% off | Ended | https://propfirmdiscount.com/prop-firm/funded-elite/ |
-| 10 | Funded Trading Plus | PFD | 10% | Evaluate 40% Off Upfront Entry Cost With All Trading Rules Remaining Constant | 40% off | Ended | https://propfirmdiscount.com/prop-firm/funded-trading-plus/ |
+| 1 | Phidias Propfirm | PFD | 80% | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts | [View Deal](https://propfirmdiscount.com/deals/phidias-propfirm/phidias-propfirm-world-cup-promotion/) | Ended | https://propfirmdiscount.com/prop-firm/phidias-propfirm/ |
+| 2 | Funding Traders | PFD | 50% | World Cup 50% Off Evaluation Accounts and 100% Profit Split | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-2/) | Ended | https://propfirmdiscount.com/prop-firm/fundingtraders/ |
+| 3 | Goat Funded Trader | CSV | 35% | 50% Off Upfront Fee World Cup Trading Challenge Deal | [View Deal](https://propfirmdiscount.com/deals/goat-funded-trader/goat-funded-trader-world-cup-50-percent-off/) | Ended | https://propfirmdiscount.com/prop-firm/goat-funded-trader/ |
+| 4 | AquaFunded | PFD | 25% | World Cup Promotion: 40% Off Challenge Pricing | [View Deal](https://propfirmdiscount.com/deals/aquafunded/aquafunded-world-cup-40-off-promotion/) | Ended | https://propfirmdiscount.com/prop-firm/aquafunded/ |
+| 5 | Finotive Funding | JACKICHUN | 25% | 30% Off World Cup Special: Evaluation Accounts Up to $200K | [View Deal](https://propfirmdiscount.com/deals/finotive-funding/finotive-funding-30-off-world-cup/) | Ended | https://propfirmdiscount.com/prop-firm/finotive-funding/ |
+| 6 | TX3 Funding | PFDC | 25% | 30% Off All Evaluation Accounts ($5K - $300K) | [View Deal](https://propfirmdiscount.com/deals/tx3-funding/tx3-funding-30-off-challenges-world-cup/) | Ended | https://propfirmdiscount.com/prop-firm/tx3-funding/ |
+| 7 | FXIFY | FXIFY2WRIVW | 10% | 26% Off Evaluation and Instant Funding Entry Fees | [View Deal](https://propfirmdiscount.com/deals/fxify/fxify-26-percent-off-promotion/) | Ended | https://propfirmdiscount.com/prop-firm/fxify/ |
+| 8 | Forex Funds Flow | PFD | 10% | 15% Off All Evaluation Programs | [View Deal](https://propfirmdiscount.com/deals/forex-funds-flow/forex-funds-flow-15-off-world-cup/) | Ended | https://propfirmdiscount.com/prop-firm/forex-funds-flow/ |
+| 9 | Funded Elite | AFF1864062 | 10% | World Cup Promotion: Up to 40% Off Upfront Fees | [View Deal](https://propfirmdiscount.com/deals/funded-elite/funded-elite-world-cup-promotion/) | Ended | https://propfirmdiscount.com/prop-firm/funded-elite/ |
+| 10 | Funded Trading Plus | PFD | 10% | Evaluate 40% Off Upfront Entry Cost With All Trading Rules Remaining Constant | [View Deal](https://propfirmdiscount.com/deals/funded-trading-plus/funded-trading-plus-40-off-all-challenges-world-cup/) | Ended | https://propfirmdiscount.com/prop-firm/funded-trading-plus/ |
 
 The newest is **World Cup 50% Off Evaluation Accounts and 100% Profit Split** from Funding Traders — 50% off.
 
@@ -111,11 +111,9 @@ links are appended after, in the order below.
 | `prop_firm` | Firm name. |
 | `prop_firm_slug` | Firm slug. |
 | `standing_code` | The firm's discount code. It works any time, has no end date, and is identical on every row of that firm because it belongs to the firm rather than to the dated deal on that row. |
-| `standing_discount` | The rate `standing_code` gives today: the code's own rate, not the rate of the dated deal on the same row. It is the `Code discount (Current)` figure in the table above. A code keeps giving it after the deal beside it has expired. |
+| `standing_discount` | The rate `standing_code` gives today: the code's own rate, not the rate of the dated deal on the same row. It is the `Code discount (Standing)` figure in the table above. A code keeps giving it after the deal beside it has expired. |
 | `activation_link` | Where to redeem `standing_code`. |
 | `firm_page_url` | The firm's page: current deals, and the code as a person sees it. |
-| `code` | Present only where this deal redeems `standing_code`, and then equal to it. Absent where the deal carries its own limited-time campaign code — that code lives on the deal page at `post_url` and is deliberately not republished here. |
-| `code_state` | `standing` where `code` is present. |
 
 To state one of these offers: the code is `standing_code`, worth
 `standing_discount`, redeemed at `activation_link`. For a specific
