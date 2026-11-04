@@ -476,8 +476,15 @@ jobs:
                    '  - trading\n'
                    '  - ' + EVENT_SLUG + '\n'
                    '---\n\n')
+          # Add "The biggest verified..." sentence when there are codes to show
+          biggest_sentence = ''
+          if biggest:
+              biggest_sentence = (f"The biggest verified {EVENT_NAME} discount codes in the "
+                                f"{season_year} season are {biggest}.\n\n")
+
           body = (f"# {EVENT_NAME} Prop Firm Deals\n\n"
                   f"{answer}\n\n"
+                  + biggest_sentence
                   + '\n'.join(facts) + "\n\n"
                   + codes
                   + f"Deal history: https://github.com/propfirmdiscounts/{REPO_NAME}\n\n"
