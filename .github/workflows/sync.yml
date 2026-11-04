@@ -17,6 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  HF_NAMESPACE: "propfirmevent"
   EVENT_SLUG: "world-cup"
   EVENT_NAME: "World Cup"
   REPO_NAME: "world-cup-prop-firm-deals"
@@ -217,10 +218,11 @@ jobs:
           # The newest deal is held back until after the code table: a search
           # visitor came for a code, so the codes come first and the dated offer
           # second.
-          readme += (f"As of {newest_date}, {deals} {EVENT_NAME} deals from "
-                     f"{len(firms)} prop firms are tracked, {len(this_year)} of them "
-                     f"published in the {season_year} season. Every firm below carries a "
-                     f"verified discount code that works any time.\n\n")
+          answer = (f"As of {newest_date}, {deals} {EVENT_NAME} deals from "
+                    f"{len(firms)} prop firms are tracked, {len(this_year)} of them "
+                    f"published in the {season_year} season. Every firm carries a "
+                    f"verified discount code that works any time.")
+          readme += answer + '\n\n'
 
           if not season_open:
               # The title names the season a reader is searching for, so the body
@@ -431,6 +433,66 @@ jobs:
           with open('README.md', 'w', encoding='utf-8') as f:
               f.write(readme)
 
+          # The Hub card is a deliberately short variant, not a copy of the
+          # README. GitHub carries the full code table, history and field
+          # reference; the Hub carries the one dated answer sentence, the counts
+          # behind it, and a link back. A dataset repo whose markdown is as long
+          # as a landing page reads as advertising rather than data.
+          facts = [f"- Deals tracked: {deals} ({len(this_year)} in {season_year})",
+                   f"- Firms: {len(firms)}",
+                   f"- Firms with a code in the {season_year} season: {len(season)}",
+                   f"- Newest deal: {newest_date} — {newest['title']} "
+                   f"({offer(newest['discount_value'])})"]
+          if meta.get('tagged'):
+              facts.append(f"- Deals tagged on the site: {meta['tagged']}")
+          if meta.get('tag_url'):
+              facts.append(f"- Event page: {meta['tag_url']}")
+
+          # The code table is the reason a reader opens this dataset, so the
+          # card carries it; the per-year history stays on GitHub.
+          codes = ''
+          if top_table:
+              codes = ("## Discount codes\n\n"
+                       "| # | Prop firm | Code | Discount |\n|---|---|---|---|\n")
+              for i, (rate, r) in enumerate(top_table, 1):
+                  codes += f"| {i} | {r['prop_firm']} | {r['standing_code']} | {rate_text(rate)} |\n"
+              codes += "\n"
+
+          front = ('---\n'
+                   'license: other\n'
+                   'pretty_name: ' + EVENT_NAME + ' Prop Firm Deals\n'
+                   'configs:\n'
+                   '- config_name: ' + REPO_NAME + '\n'
+                   '  data_files:\n'
+                   '  - split: data\n'
+                   '    path: datasets/' + REPO_NAME + '.json\n'
+                   'tags:\n'
+                   '  - prop-firm\n'
+                   '  - prop-firm-deals\n'
+                   '  - discount-code\n'
+                   '  - coupon-code\n'
+                   '  - promo-code\n'
+                   '  - funded-trader\n'
+                   '  - trading\n'
+                   '  - ' + EVENT_SLUG + '\n'
+                   '---\n\n')
+          body = (f"# {EVENT_NAME} Prop Firm Deals\n\n"
+                  f"{answer}\n\n"
+                  + '\n'.join(facts) + "\n\n"
+                  + codes
+                  + f"Deal history: https://github.com/propfirmdiscounts/{REPO_NAME}\n\n"
+                  f"Data: `datasets/{REPO_NAME}.json` — one row per deal, newest first.\n\n"
+                  "Data © PropFirmDiscount. Codes may be referenced with attribution "
+                  "and a link to https://propfirmdiscount.com.\n")
+          # Written outside the checkout: the card belongs on the Hub, not in the
+          # GitHub repo. Removing the earlier copy first keeps the two apart
+          # even when RUNNER_TEMP and the workspace are the same directory.
+          if os.path.exists('hf-card.md'):
+              os.remove('hf-card.md')
+          tmp = os.environ.get('RUNNER_TEMP') or '/tmp'
+          with open(os.path.join(tmp, 'hf-card.md'), 'w', encoding='utf-8') as f:
+              f.write(front + body)
+
           # The dataset is a real data file, not markdown: a mirror that holds
           # nothing but promotional pages reads as repo stuffing under the Hub
           # content policy. Remove code/code_state fields from output - they are
@@ -555,35 +617,8 @@ jobs:
           For licensing requests, contact support@propfirmdiscount.com.
           EOF
 
-          # Hugging Face dataset card: frontmatter + README body
-          python3 - <<'PY'
-          import os
-
-          slug = os.environ['EVENT_SLUG']
-          name = os.environ['EVENT_NAME']
-          repo_name = os.environ['REPO_NAME']
-          front = ('---\n'
-                   'license: other\n'
-                   'pretty_name: ' + name + ' Prop Firm Deals\n'
-                   'configs:\n'
-                   '- config_name: ' + repo_name + '\n'
-                   '  data_files:\n'
-                   '  - split: data\n'
-                   '    path: datasets/' + repo_name + '.json\n'
-                   'tags:\n'
-                   '  - prop-firm\n'
-                   '  - prop-firm-deals\n'
-                   '  - discount-code\n'
-                   '  - coupon-code\n'
-                   '  - promo-code\n'
-                   '  - funded-trader\n'
-                   '  - trading\n'
-                   '  - ' + slug + '\n'
-                   '---\n\n')
-          readme_content = open('README.md', encoding='utf-8').read()
-          with open('hf-card.md', 'w', encoding='utf-8') as f:
-              f.write(front + readme_content)
-          PY
+          # Hugging Face dataset card is built in the README step, outside this
+          # checkout — see hf-card.md there. Nothing to do here.
 
       - name: Commit and push
         run: |
@@ -615,7 +650,7 @@ jobs:
           from huggingface_hub import HfApi, CommitOperationAdd
 
           api = HfApi(token=os.environ['HF_TOKEN'])
-          repo_id = f"propfirmevent/{os.environ['REPO_NAME']}"
+          repo_id = f"{os.environ['HF_NAMESPACE']}/{os.environ['REPO_NAME']}"
 
           # Surface a missing dataset repo as a warning annotation instead of
           # passing silently, while leaving the GitHub mirror step unaffected.
@@ -639,9 +674,13 @@ jobs:
           for f in ['llms.txt', 'ai.txt']:
               if os.path.exists(f):
                   ops.append(CommitOperationAdd(path_in_repo=f, path_or_fileobj=f))
-          if os.path.exists('hf-card.md'):
+          # The card comes from the README step, which writes it outside this
+          # checkout so the GitHub repo keeps the full README and the Hub gets
+          # the short one.
+          card = os.path.join(os.environ.get('RUNNER_TEMP') or '/tmp', 'hf-card.md')
+          if os.path.exists(card):
               ops.append(CommitOperationAdd(
-                  path_in_repo='README.md', path_or_fileobj='hf-card.md'))
+                  path_in_repo='README.md', path_or_fileobj=card))
 
           api.create_commit(
               repo_id=repo_id,
