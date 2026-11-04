@@ -452,7 +452,7 @@ jobs:
           # card carries it; the per-year history stays on GitHub.
           codes = ''
           if top_table:
-              codes = ("## Discount codes\n\n"
+              codes = (f"## Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}\n\n"
                        "| # | Prop firm | Code | Discount |\n|---|---|---|---|\n")
               for i, (rate, r) in enumerate(top_table, 1):
                   codes += f"| {i} | {r['prop_firm']} | {r['standing_code']} | {rate_text(rate)} |\n"
