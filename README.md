@@ -2,14 +2,14 @@
 
 As of 2026-07-18, 19 World Cup deals from 11 prop firms are tracked, 19 of them published in the 2026 season. Every firm carries a verified discount code that works any time.
 
-The biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, and 50% OFF with code PFD at Funding Traders.
+The biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, and 50% OFF with code PFD at FundingTraders.
 
 ## Prop Firms with the Highest Discount Codes in World Cup 2026
 
 | # | Prop firm | Exclusive code | Code discount (Standing) | Latest World Cup deal | Deal link | Expires | Firm page |
 |---|---|---|---|---|---|---|---|
 | 1 | Phidias Propfirm | PFD | 80% | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts | [View Deal](https://propfirmdiscount.com/deals/phidias-propfirm/phidias-propfirm-world-cup-promotion/) | Ended | https://propfirmdiscount.com/prop-firm/phidias-propfirm/ |
-| 2 | Funding Traders | PFD | 50% | World Cup 50% Off Evaluation Accounts and 100% Profit Split | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-2/) | Ended | https://propfirmdiscount.com/prop-firm/fundingtraders/ |
+| 2 | FundingTraders | PFD | 50% | World Cup 50% Off Evaluation Accounts and 100% Profit Split | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-2/) | Ended | https://propfirmdiscount.com/prop-firm/fundingtraders/ |
 | 3 | AquaFunded | PFD | 35% | World Cup Promotion: 40% Off Challenge Pricing | [View Deal](https://propfirmdiscount.com/deals/aquafunded/aquafunded-world-cup-40-off-promotion/) | Ended | https://propfirmdiscount.com/prop-firm/aquafunded/ |
 | 4 | Goat Funded Trader | CSV | 35% | 50% Off Upfront Fee World Cup Trading Challenge Deal | [View Deal](https://propfirmdiscount.com/deals/goat-funded-trader/goat-funded-trader-world-cup-50-percent-off/) | Ended | https://propfirmdiscount.com/prop-firm/goat-funded-trader/ |
 | 5 | Finotive Funding | JACKICHUN | 25% | 30% Off World Cup Special: Evaluation Accounts Up to $200K | [View Deal](https://propfirmdiscount.com/deals/finotive-funding/finotive-funding-30-off-world-cup/) | Ended | https://propfirmdiscount.com/prop-firm/finotive-funding/ |
@@ -19,7 +19,7 @@ The biggest verified World Cup discount codes in the 2026 season are 80% OFF wit
 | 9 | Forex Funds Flow | PFD | 10% | 15% Off All Evaluation Programs | [View Deal](https://propfirmdiscount.com/deals/forex-funds-flow/forex-funds-flow-15-off-world-cup/) | Ended | https://propfirmdiscount.com/prop-firm/forex-funds-flow/ |
 | 10 | Funded Elite | AFF1864062 | 10% | World Cup Promotion: Up to 40% Off Upfront Fees | [View Deal](https://propfirmdiscount.com/deals/funded-elite/funded-elite-world-cup-promotion/) | Ended | https://propfirmdiscount.com/prop-firm/funded-elite/ |
 
-The newest is **World Cup 50% Off Evaluation Accounts and 100% Profit Split** from Funding Traders — 50% off.
+The newest is **World Cup 50% Off Evaluation Accounts and 100% Profit Split** from FundingTraders — 50% off.
 
 - Event: World Cup
 - Deals tracked: 19 (19 in 2026)
@@ -35,7 +35,7 @@ The newest is **World Cup 50% Off Evaluation Accounts and 100% Profit Split** fr
 
 **What is the newest World Cup prop firm deal?**
 
-**World Cup 50% Off Evaluation Accounts and 100% Profit Split** from Funding Traders — published 2026-07-18. Offer: 50% off. Offer has ended.
+**World Cup 50% Off Evaluation Accounts and 100% Profit Split** from FundingTraders — published 2026-07-18. Offer: 50% off. Offer has ended.
 
 **Do these firms have discount codes?**
 
@@ -55,13 +55,13 @@ Total deals tracked: **19**
 
 | Deal Date | Firm | Title | Discount | Expires | Event | Deal Link |
 |---|---|---|---|---|---|---|
-| 2026-07-18 | Funding Traders | World Cup 50% Off Evaluation Accounts and 100% Profit Split | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-2/) |
-| 2026-07-18 | Funding Traders | World Cup 50% Off Trading Challenges and 100% Profit Split | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-1/) |
+| 2026-07-18 | FundingTraders | World Cup 50% Off Evaluation Accounts and 100% Profit Split | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-2/) |
+| 2026-07-18 | FundingTraders | World Cup 50% Off Trading Challenges and 100% Profit Split | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-1/) |
 | 2026-07-17 | Finotive Funding | 30% Off World Cup Special: Evaluation Accounts Up to $200K | 30% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/finotive-funding/finotive-funding-30-off-world-cup/) |
 | 2026-07-14 | Goat Funded Trader | 50% Off Upfront Fee World Cup Trading Challenge Deal | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/goat-funded-trader/goat-funded-trader-world-cup-50-percent-off/) |
 | 2026-06-25 | Funded Trading Plus | Evaluate 40% Off Upfront Entry Cost With All Trading Rules Remaining Constant | 40% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/funded-trading-plus/funded-trading-plus-40-off-all-challenges-world-cup/) |
-| 2026-06-23 | Funding Traders | 40% Off Cost To Enter And 100% Profit Split | 40% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-40-off-100-profit-split-3/) |
-| 2026-06-23 | Funding Traders | 50% Off Upfront Fee For All Programs | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-50-off-all-programs/) |
+| 2026-06-23 | FundingTraders | 40% Off Cost To Enter And 100% Profit Split | 40% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-40-off-100-profit-split-3/) |
+| 2026-06-23 | FundingTraders | 50% Off Upfront Fee For All Programs | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-50-off-all-programs/) |
 | 2026-06-23 | AquaFunded | World Cup Promotion: 40% Off Challenge Pricing | 40% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/aquafunded/aquafunded-world-cup-40-off-promotion/) |
 | 2026-06-17 | TX3 Funding | 30% Off All Evaluation Accounts ($5K - $300K) | 30% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/tx3-funding/tx3-funding-30-off-challenges-world-cup/) |
 | 2026-06-13 | HyroTrader | World Cup: 15% Off All Evaluation Accounts | 15% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/hyrotrader/hyrotrader-world-cup-15-off/) |
@@ -69,10 +69,10 @@ Total deals tracked: **19**
 | 2026-06-11 | Phidias Propfirm | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts | 80% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/phidias-propfirm/phidias-propfirm-world-cup-promotion/) |
 | 2026-06-11 | Funded Trading Plus | 30% Off All Trading Challenges Lowers Initial Challenge Fee | 30% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/funded-trading-plus/funded-trading-plus-30-off-world-cup-challenges/) |
 | 2026-06-11 | Funded Elite | World Cup Promotion: Up to 40% Off Upfront Fees | 40% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/funded-elite/funded-elite-world-cup-promotion/) |
-| 2026-06-10 | Funding Traders | Buy 1 Get 3 Evaluation Accounts World Cup Offer | Buy 1 Get 3 | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-buy-1-get-3-world-cup-2/) |
-| 2026-06-10 | Funding Traders | Buy 1 Get 3 Evaluation Accounts World Cup Offer | Buy 1 Get 3 | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-buy-1-get-3-world-cup/) |
+| 2026-06-10 | FundingTraders | Buy 1 Get 3 Evaluation Accounts World Cup Offer | Buy 1 Get 3 | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-buy-1-get-3-world-cup-2/) |
+| 2026-06-10 | FundingTraders | Buy 1 Get 3 Evaluation Accounts World Cup Offer | Buy 1 Get 3 | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-buy-1-get-3-world-cup/) |
 | 2026-06-10 | TX3 Funding | World Cup Promotion: 26% Off All Evaluation Accounts (5K to 300K) | 26% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/tx3-funding/tx3-funding-world-cup-26-off/) |
-| 2026-06-08 | Funding Traders | 50% Off All Challenges Upfront Fee | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-50-percent-discount-all-challenges/) |
+| 2026-06-08 | FundingTraders | 50% Off All Challenges Upfront Fee | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-50-percent-discount-all-challenges/) |
 | 2026-06-01 | FXIFY | 26% Off Evaluation and Instant Funding Entry Fees | 26% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fxify/fxify-26-percent-off-promotion/) |
 
 ---
