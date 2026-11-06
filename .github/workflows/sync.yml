@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HF_NAMESPACE: "propfirmevent"
+  HF_NAMESPACE: "prop-firm"
   EVENT_SLUG: "world-cup"
   EVENT_NAME: "World Cup"
   REPO_NAME: "world-cup-prop-firm-deals"
@@ -448,16 +448,9 @@ jobs:
           if meta.get('tag_url'):
               facts.append(f"- Event page: {meta['tag_url']}")
 
-          # The code table is the reason a reader opens this dataset, so the
-          # card carries it; the per-year history stays on GitHub.
-          codes = ''
-          if top_table:
-              codes = (f"## Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}\n\n"
-                       "| # | Prop firm | Code | Discount |\n|---|---|---|---|\n")
-              for i, (rate, r) in enumerate(top_table, 1):
-                  codes += f"| {i} | {r['prop_firm']} | {r['standing_code']} | {rate_text(rate)} |\n"
-              codes += "\n"
-
+          # No code table on the HF card: the Hub side stays facts-only, the
+          # code table lives in the GitHub README (line ~277) where a reader
+          # can also follow the site link.
           front = ('---\n'
                    'license: other\n'
                    'pretty_name: ' + EVENT_NAME + ' Prop Firm Deals\n'
@@ -486,7 +479,6 @@ jobs:
                   f"{answer}\n\n"
                   + biggest_sentence
                   + '\n'.join(facts) + "\n\n"
-                  + codes
                   + f"Deal history: https://github.com/propfirmdiscounts/{REPO_NAME}\n\n"
                   f"Data: `datasets/{REPO_NAME}.json` — one row per deal, newest first.\n\n"
                   "Data © PropFirmDiscount. Codes may be referenced with attribution "
