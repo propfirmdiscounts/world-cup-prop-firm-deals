@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HF_NAMESPACE: "prop-firm"
-  HF_REPO_NAME: world-cup-prop-firm-discount-codes
+  HF_NAMESPACE: "propfirmevent"
+  HF_REPO_NAME: world-cup-prop-firm-deals
   EVENT_SLUG: "world-cup"
   EVENT_NAME: "World Cup"
   REPO_NAME: "world-cup-prop-firm-deals"
