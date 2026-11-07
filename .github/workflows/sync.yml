@@ -18,7 +18,6 @@ concurrency:
 
 env:
   HF_NAMESPACE: "propfirmevent"
-  HF_REPO_NAME: world-cup-prop-firm-deals
   EVENT_SLUG: "world-cup"
   EVENT_NAME: "World Cup"
   REPO_NAME: "world-cup-prop-firm-deals"
@@ -650,7 +649,7 @@ jobs:
           from huggingface_hub import HfApi, CommitOperationAdd
 
           api = HfApi(token=os.environ['HF_TOKEN'])
-          repo_id = f"{os.environ['HF_NAMESPACE']}/{os.environ['HF_REPO_NAME']}"
+          repo_id = f"{os.environ['HF_NAMESPACE']}/{os.environ['REPO_NAME']}"
 
           # Surface a missing dataset repo as a warning annotation instead of
           # passing silently, while leaving the GitHub mirror step unaffected.
