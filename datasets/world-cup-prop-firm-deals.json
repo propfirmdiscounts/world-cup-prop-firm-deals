@@ -280,6 +280,26 @@
     "activation_link": "https://propfirmdiscount.com/go/fundedelite"
   },
   {
+    "deal_id": 12150,
+    "prop_firm": "Bullwaves Prime",
+    "prop_firm_slug": "bullwaves",
+    "title": "20% Price Reduction on 5K, 10K, 25K and 50K Evaluation Accounts Lowers Account Purchase Cost",
+    "event": "World Cup",
+    "offer_type": "coupon",
+    "scope": [
+      "2 Step Challenge, 5K, 10K, 25K, 50K, Evaluation Account, Fee Discount"
+    ],
+    "discount_value": "20%",
+    "standing_code": "PFD",
+    "standing_discount": "10%",
+    "date_published": "2026-06-10",
+    "date_exp": "Ended",
+    "post_url": "https://propfirmdiscount.com/deals/bullwaves/bullwaves-prime-20-off-june-world-cup/",
+    "firm_page_url": "https://propfirmdiscount.com/prop-firm/bullwaves/",
+    "last_verified": "2026-06-10",
+    "activation_link": "https://propfirmdiscount.com/go/bullwaves"
+  },
+  {
     "deal_id": 12149,
     "prop_firm": "FundingTraders",
     "prop_firm_slug": "fundingtraders",
