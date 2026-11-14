@@ -103,6 +103,16 @@ jobs:
           # and two runs of an unchanged dataset produce identical bytes.
           rows.sort(key=lambda r: (r['date_published'], r['deal_id']), reverse=True)
 
+          # For global firms, append " with code {code}" to deal titles
+          for r in rows:
+              if r.get('code_state') == 'standing' or r.get('code'):
+                  aff_code = r.get('code') or r.get('standing_code')
+                  if aff_code:
+                      suffix = f" with code {aff_code}"
+                      t = str(r.get('title') or '').strip().rstrip('.')
+                      if t and not t.lower().endswith(suffix.lower()):
+                          r['title'] = f"{t}{suffix}"
+
           deals = len(rows)
           dates = [r['date_published'] for r in rows]
           newest_date = max(dates)
@@ -218,7 +228,9 @@ jobs:
           # The newest deal is held back until after the code table: a search
           # visitor came for a code, so the codes come first and the dated offer
           # second.
-          answer = (f"As of {newest_date}, {deals} {EVENT_NAME} deals from "
+          from datetime import datetime, timezone
+          now_month = datetime.now(timezone.utc).strftime('%Y-%m')
+          answer = (f"As of {now_month}, {deals} {EVENT_NAME} deals from "
                     f"{len(firms)} prop firms are tracked, {len(this_year)} of them "
                     f"published in the {season_year} season. Every firm carries a "
                     f"verified discount code that works any time.")
@@ -347,7 +359,7 @@ jobs:
 
           The newest deal is {offer(newest['discount_value'])}. """
           if top:
-              readme += (f"Standing discount codes among these firms run up to "
+              readme += (f"Standing discount codes among these firms run "
                          f"{rate_text(top[0][0])} off, and every deal in the history below "
                          f"states its own figure.\n\n")
           else:
@@ -368,6 +380,9 @@ jobs:
               readme += "|---|---|---|---|---|---|---|\n"
               for r in group:
                   title = r['title'].replace('|', '\\|')
+                  prefix = f"{r['prop_firm']}: "
+                  if not title.startswith(prefix):
+                      title = f"{prefix}{title}"
                   readme += (f"| {r['date_published']} | {r['prop_firm']} | {title} | "
                              f"{offer(r['discount_value'])} | {r.get('date_exp') or 'N/A'} | "
                              f"{r.get('event') or '—'} | [View Deal]({r['post_url']}) |\n")
@@ -634,7 +649,8 @@ jobs:
             exit 0
           fi
           git commit -m "Sync $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            -m "Update $EVENT_NAME deal history and README"
+            -m "Update $EVENT_NAME deal history and README" \
+            -m "Co-Authored-By: propfirmdiscounts <73492456+propfirmdiscounts@users.noreply.github.com>"
           git push
 
       - name: Push Hugging Face mirror
