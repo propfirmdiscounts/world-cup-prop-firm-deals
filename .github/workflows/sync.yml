@@ -311,17 +311,19 @@ jobs:
                   readme += (f"| {i} | {r['prop_firm']} | {r['standing_code']} | "
                              f"{rate_text(code_rate)} | {title} | "
                              f"[View Deal]({r['post_url']}) | "
-                             f"{r.get('date_exp') or 'N/A'} | {r['firm_page_url']} |\n")
+                             f"{r.get('date_exp') or 'N/A'} | [{r['firm_page_url']}]({r['firm_page_url']}) |\n")
               readme += "\n"
 
           readme += (f"The newest is **{newest['title']}** from {newest['prop_firm']} — "
                      f"{offer(newest['discount_value'])}.\n\n")
 
+          repo_url = f"https://github.com/propfirmdiscounts/{slug}-prop-firm-deals"
           readme += f"""- Event: {EVENT_NAME}
           - Deals tracked: {deals} ({len(this_year)} in {season_year})
           - Firms: {len(firms)}
           - Firms with a code in the {season_year} season: {len(season)}
           - Newest deal: {newest_date}
+          - GitHub repository: [{repo_url}]({repo_url})
           """
           if meta.get('tagged'):
               # The gap between these two numbers is the point of stating both:
@@ -329,9 +331,9 @@ jobs:
               readme += (f"- Deals tagged on the site: {meta['tagged']} "
                          f"({deals} of them from firms with a verified code, listed below)\n")
           if meta.get('tag_url'):
-              readme += f"- Event page: {meta['tag_url']}\n"
-          readme += ("- Full dataset: https://github.com/propfirmdiscounts/prop-firm-discount-codes\n"
-                     "- Deal dataset: https://propfirmdiscount.com/api/prop-firm-events/\n\n")
+              readme += f"- Event page: [{meta['tag_url']}]({meta['tag_url']})\n"
+          readme += ("- Full dataset: [https://github.com/propfirmdiscounts/prop-firm-discount-codes](https://github.com/propfirmdiscounts/prop-firm-discount-codes)\n"
+                     "- Deal dataset: [https://propfirmdiscount.com/api/prop-firm-events/](https://propfirmdiscount.com/api/prop-firm-events/)\n\n")
 
           # FAQ headings phrased as the questions people type. Every answer is
           # assembled from fields above; nothing is asserted that the dataset
@@ -399,9 +401,9 @@ jobs:
           its dates fall near the event. A deal with no event tag appears in its firm's own dataset
           instead: https://github.com/propfirmdiscounts
 
-          - Data source: https://propfirmdiscount.com
-          - Event page: {meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'}
-          - All firms: https://github.com/propfirmdiscounts/prop-firm-discount-codes
+          - Data source: [https://propfirmdiscount.com](https://propfirmdiscount.com)
+          - Event page: [{meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'}]({meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'})
+          - All firms: [https://github.com/propfirmdiscounts/prop-firm-discount-codes](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
 
           ## Fields in `datasets/{REPO_NAME}.json`
 
