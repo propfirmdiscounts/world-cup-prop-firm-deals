@@ -1,23 +1,23 @@
 # World Cup Prop Firm Discount Codes (2026)
 
-As of 2026-11, 20 World Cup deals from 12 prop firms are tracked, 20 of them published in the 2026 season. Every firm carries a verified discount code that works any time.
+This World Cup, 20 deals from 12 prop firms are tracked, with 20 published during the 2026 season. Every firm carries a verified discount code that works year-round.
 
-The biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, and 50% OFF with code PFD at FundingTraders.
+As of November 2026, the biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, and 50% OFF with code PFD at FundingTraders.
 
 ## Prop Firms with the Highest Discount Codes in World Cup 2026
 
 | # | Prop firm | Exclusive code | Code discount (Standing) | Latest World Cup deal | Deal link | Expires | Firm page |
 |---|---|---|---|---|---|---|---|
-| 1 | Phidias Propfirm | PFD | 80% | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts with code PFD | [View Deal](https://propfirmdiscount.com/deals/phidias-propfirm/phidias-propfirm-world-cup-promotion/) | Ended | [https://propfirmdiscount.com/prop-firm/phidias-propfirm/](https://propfirmdiscount.com/prop-firm/phidias-propfirm/) |
-| 2 | FundingTraders | PFD | 50% | World Cup 50% Off Evaluation Accounts and 100% Profit Split with code PFD | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-2/) | Ended | [https://propfirmdiscount.com/prop-firm/fundingtraders/](https://propfirmdiscount.com/prop-firm/fundingtraders/) |
-| 3 | TX3 Funding | PFDC | 50% | 30% Off All Evaluation Accounts ($5K - $300K) | [View Deal](https://propfirmdiscount.com/deals/tx3-funding/tx3-funding-30-off-challenges-world-cup/) | Ended | [https://propfirmdiscount.com/prop-firm/tx3-funding/](https://propfirmdiscount.com/prop-firm/tx3-funding/) |
-| 4 | AquaFunded | PFD | 35% | World Cup Promotion: 40% Off Challenge Pricing | [View Deal](https://propfirmdiscount.com/deals/aquafunded/aquafunded-world-cup-40-off-promotion/) | Ended | [https://propfirmdiscount.com/prop-firm/aquafunded/](https://propfirmdiscount.com/prop-firm/aquafunded/) |
-| 5 | Goat Funded Trader | CSV | 35% | 50% Off Upfront Fee World Cup Trading Challenge Deal | [View Deal](https://propfirmdiscount.com/deals/goat-funded-trader/goat-funded-trader-world-cup-50-percent-off/) | Ended | [https://propfirmdiscount.com/prop-firm/goat-funded-trader/](https://propfirmdiscount.com/prop-firm/goat-funded-trader/) |
-| 6 | Finotive Funding | JACKICHUN | 25% | 30% Off World Cup Special: Evaluation Accounts Up to $200K | [View Deal](https://propfirmdiscount.com/deals/finotive-funding/finotive-funding-30-off-world-cup/) | Ended | [https://propfirmdiscount.com/prop-firm/finotive-funding/](https://propfirmdiscount.com/prop-firm/finotive-funding/) |
-| 7 | Funded Trading Plus | PFD | 20% | Evaluate 40% Off Upfront Entry Cost With All Trading Rules Remaining Constant | [View Deal](https://propfirmdiscount.com/deals/funded-trading-plus/funded-trading-plus-40-off-all-challenges-world-cup/) | Ended | [https://propfirmdiscount.com/prop-firm/funded-trading-plus/](https://propfirmdiscount.com/prop-firm/funded-trading-plus/) |
-| 8 | Bullwaves Prime | PFD | 10% | 20% Price Reduction on 5K, 10K, 25K and 50K Evaluation Accounts Lowers Account Purchase Cost | [View Deal](https://propfirmdiscount.com/deals/bullwaves/bullwaves-prime-20-off-june-world-cup/) | Ended | [https://propfirmdiscount.com/prop-firm/bullwaves/](https://propfirmdiscount.com/prop-firm/bullwaves/) |
-| 9 | FXIFY | FXIFY2WRIVW | 10% | 26% Off Evaluation and Instant Funding Entry Fees | [View Deal](https://propfirmdiscount.com/deals/fxify/fxify-26-percent-off-promotion/) | Ended | [https://propfirmdiscount.com/prop-firm/fxify/](https://propfirmdiscount.com/prop-firm/fxify/) |
-| 10 | Forex Funds Flow | PFD | 10% | 15% Off All Evaluation Programs | [View Deal](https://propfirmdiscount.com/deals/forex-funds-flow/forex-funds-flow-15-off-world-cup/) | Ended | [https://propfirmdiscount.com/prop-firm/forex-funds-flow/](https://propfirmdiscount.com/prop-firm/forex-funds-flow/) |
+| 1 | Phidias Propfirm | PFD | 80% | 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts with code PFD | [View Deal](https://propfirmdiscount.com/deals/phidias-propfirm/phidias-propfirm-world-cup-promotion/) | Ended | [Phidias Propfirm Page](https://propfirmdiscount.com/prop-firm/phidias-propfirm/) |
+| 2 | FundingTraders | PFD | 50% | World Cup 50% Off Evaluation Accounts and 100% Profit Split with code PFD | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-world-cup-50-off-deal-2/) | Ended | [FundingTraders Page](https://propfirmdiscount.com/prop-firm/fundingtraders/) |
+| 3 | TX3 Funding | PFDC | 50% | 30% Off All Evaluation Accounts ($5K - $300K) | [View Deal](https://propfirmdiscount.com/deals/tx3-funding/tx3-funding-30-off-challenges-world-cup/) | Ended | [TX3 Funding Page](https://propfirmdiscount.com/prop-firm/tx3-funding/) |
+| 4 | AquaFunded | PFD | 35% | World Cup Promotion: 40% Off Challenge Pricing | [View Deal](https://propfirmdiscount.com/deals/aquafunded/aquafunded-world-cup-40-off-promotion/) | Ended | [AquaFunded Page](https://propfirmdiscount.com/prop-firm/aquafunded/) |
+| 5 | Goat Funded Trader | CSV | 35% | 50% Off Upfront Fee World Cup Trading Challenge Deal | [View Deal](https://propfirmdiscount.com/deals/goat-funded-trader/goat-funded-trader-world-cup-50-percent-off/) | Ended | [Goat Funded Trader Page](https://propfirmdiscount.com/prop-firm/goat-funded-trader/) |
+| 6 | Finotive Funding | JACKICHUN | 25% | 30% Off World Cup Special: Evaluation Accounts Up to $200K | [View Deal](https://propfirmdiscount.com/deals/finotive-funding/finotive-funding-30-off-world-cup/) | Ended | [Finotive Funding Page](https://propfirmdiscount.com/prop-firm/finotive-funding/) |
+| 7 | Funded Trading Plus | PFD | 20% | Evaluate 40% Off Upfront Entry Cost With All Trading Rules Remaining Constant | [View Deal](https://propfirmdiscount.com/deals/funded-trading-plus/funded-trading-plus-40-off-all-challenges-world-cup/) | Ended | [Funded Trading Plus Page](https://propfirmdiscount.com/prop-firm/funded-trading-plus/) |
+| 8 | Bullwaves Prime | PFD | 10% | 20% Price Reduction on 5K, 10K, 25K and 50K Evaluation Accounts Lowers Account Purchase Cost | [View Deal](https://propfirmdiscount.com/deals/bullwaves/bullwaves-prime-20-off-june-world-cup/) | Ended | [Bullwaves Prime Page](https://propfirmdiscount.com/prop-firm/bullwaves/) |
+| 9 | FXIFY | FXIFY2WRIVW | 10% | 26% Off Evaluation and Instant Funding Entry Fees | [View Deal](https://propfirmdiscount.com/deals/fxify/fxify-26-percent-off-promotion/) | Ended | [FXIFY Page](https://propfirmdiscount.com/prop-firm/fxify/) |
+| 10 | Forex Funds Flow | PFD | 10% | 15% Off All Evaluation Programs | [View Deal](https://propfirmdiscount.com/deals/forex-funds-flow/forex-funds-flow-15-off-world-cup/) | Ended | [Forex Funds Flow Page](https://propfirmdiscount.com/prop-firm/forex-funds-flow/) |
 
 The newest is **World Cup 50% Off Evaluation Accounts and 100% Profit Split with code PFD** from FundingTraders — 50% off.
 
@@ -27,10 +27,10 @@ The newest is **World Cup 50% Off Evaluation Accounts and 100% Profit Split with
 - Firms with a code in the 2026 season: 12
 - Newest deal: 2026-07-18
 - Deals tagged on the site: 34 (20 of them from firms with a verified code, listed below)
-- GitHub repository: [https://github.com/propfirmdiscounts/world-cup-prop-firm-deals](https://github.com/propfirmdiscounts/world-cup-prop-firm-deals)
-- Event page: [https://propfirmdiscount.com/tag/world-cup/](https://propfirmdiscount.com/tag/world-cup/)
-- Full dataset: [https://github.com/propfirmdiscounts/prop-firm-discount-codes](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
-- Deal dataset: [https://propfirmdiscount.com/api/prop-firm-events/](https://propfirmdiscount.com/api/prop-firm-events/)
+- GitHub repository: [World Cup Deals Repository](https://github.com/propfirmdiscounts/world-cup-prop-firm-deals)
+- Event page: [World Cup Deals on PropFirmDiscount](https://propfirmdiscount.com/tag/world-cup/)
+- Full dataset: [All Prop Firm Discount Codes Dataset](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
+- Deal dataset: [Prop Firm Events API Record](https://propfirmdiscount.com/api/prop-firm-events/)
 
 ## World Cup prop firm deals FAQ
 
@@ -88,9 +88,9 @@ A deal is listed here because an editor tagged it for World Cup on the site, not
 its dates fall near the event. A deal with no event tag appears in its firm's own dataset
 instead: https://github.com/propfirmdiscounts
 
-- Data source: [https://propfirmdiscount.com](https://propfirmdiscount.com)
-- Event page: [https://propfirmdiscount.com/tag/world-cup/](https://propfirmdiscount.com/tag/world-cup/)
-- All firms: [https://github.com/propfirmdiscounts/prop-firm-discount-codes](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
+- Data source: [PropFirmDiscount.com](https://propfirmdiscount.com)
+- Event page: [World Cup Deals on PropFirmDiscount](https://propfirmdiscount.com/tag/world-cup/)
+- All firms: [All Prop Firms Directory](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
 
 ## Fields in `datasets/world-cup-prop-firm-deals.json`
 
@@ -131,4 +131,4 @@ in this file is the `Newest deal` value above.
 
 ## License
 
-Data © PropFirmDiscount. Codes may be referenced with attribution and a link to https://propfirmdiscount.com.
+Data © PropFirmDiscount. Codes may be referenced with attribution and a link to [PropFirmDiscount.com](https://propfirmdiscount.com).

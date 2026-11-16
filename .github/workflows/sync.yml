@@ -229,12 +229,21 @@ jobs:
           # visitor came for a code, so the codes come first and the dated offer
           # second.
           from datetime import datetime, timezone
-          now_month = datetime.now(timezone.utc).strftime('%Y-%m')
-          answer = (f"As of {now_month}, {deals} {EVENT_NAME} deals from "
-                    f"{len(firms)} prop firms are tracked, {len(this_year)} of them "
-                    f"published in the {season_year} season. Every firm carries a "
-                    f"verified discount code that works any time.")
-          readme += answer + '\n\n'
+          now_month = datetime.now(timezone.utc).strftime('%B %Y')
+          intro = (f"This {EVENT_NAME}, {deals} deals from "
+                   f"{len(firms)} prop firms are tracked, with {len(this_year)} "
+                   f"published during the {season_year} season. Every firm carries a "
+                   f"verified discount code that works year-round.")
+          readme += intro + '\n\n'
+
+          if biggest:
+              as_of_sentence = (f"As of {now_month}, the biggest verified {EVENT_NAME} "
+                                f"discount codes in the {season_year} season are {biggest}.")
+              readme += as_of_sentence + '\n\n'
+          else:
+              as_of_sentence = (f"As of {now_month}, verified {EVENT_NAME} prop firm discount codes "
+                                f"and promotional deal archives are tracked on PropFirmDiscount.com.")
+              readme += as_of_sentence + '\n\n'
 
           if not season_open:
               # The title names the season a reader is searching for, so the body
@@ -262,68 +271,33 @@ jobs:
                          f"and new {now_year} {EVENT_NAME} deals appear here as they are "
                          f"published, so check back for the lineup.\n\n")
 
-          if biggest:
-              # Naming the event and the season in this sentence is what makes
-              # it match a "Halloween 2026 prop firm discount code" query rather
-              # than a generic "biggest discount code" one; it sits above the
-              # table for the same reason. The season named is the one the table
-              # actually ranks, so heading and sentence cannot disagree.
-              readme += (f"The biggest verified {EVENT_NAME} discount codes in the "
-                         f"{season_year} season are {biggest}.\n\n")
-
-              # Two rates, two columns. "Code discount" is what the standing
-              # code gives and it is the same number on every row of that firm,
-              # because it belongs to the code. "Deal discount" is what this
-              # particular campaign stated, and it is the deal title's own
-              # figure. They are unrelated: a code can give 30% while the deal
-              # beside it advertised 60%. Printing one under the other's
-              # heading — or ranking by the code and showing only the deal —
-              # states a rate at which nothing is actually on sale, which is
-              # the one thing this table must never do.
-              #
-              # "(Current)" is on the code column because every deal beside it
-              # has ended and its rate is history, while the code's rate is
-              # what a reader gets today. Without the word, two percentages on
-              # one row read as the same fact stated twice, and the reader has
-              # to work out which one they can still use.
+          if top_table:
               readme += f"""## Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}
 
           | # | Prop firm | Exclusive code | Code discount (Standing) | Latest {EVENT_NAME} deal | Deal link | Expires | Firm page |
           |---|---|---|---|---|---|---|---|
           """
               for i, (rate, r) in enumerate(top_table, 1):
-                  # The deal title and its expiry are what make the row checkable:
-                  # a rate with no offer behind it is a number a reader has to
-                  # take on trust, while a named deal and a date can be looked up
-                  # in the history below. The expiry is the deal's own, not a
-                  # standing-code lifetime.
-                  #
-                  # "Code discount (Standing)" column: for global firms (code_state
-                  # present), the deal redeems the standing code, so show the
-                  # deal's own discount_value. For non-global firms, the deal ran
-                  # on a campaign code we don't carry, so show the standing code's
-                  # rate (standing_discount) — what the code gives today.
                   title = str(r['title']).replace('|', '\\|')
                   code_rate = pct(r.get('discount_value')) if 'code_state' in r else rate
-                  # Fallback to rate (standing_discount) if code_rate is None
                   if code_rate is None:
                       code_rate = rate
                   readme += (f"| {i} | {r['prop_firm']} | {r['standing_code']} | "
                              f"{rate_text(code_rate)} | {title} | "
                              f"[View Deal]({r['post_url']}) | "
-                             f"{r.get('date_exp') or 'N/A'} | [{r['firm_page_url']}]({r['firm_page_url']}) |\n")
+                             f"{r.get('date_exp') or 'N/A'} | [{r['prop_firm']} Page]({r['firm_page_url']}) |\n")
               readme += "\n"
 
           readme += (f"The newest is **{newest['title']}** from {newest['prop_firm']} — "
                      f"{offer(newest['discount_value'])}.\n\n")
 
-          repo_url = f"https://github.com/propfirmdiscounts/{slug}-prop-firm-deals"
+          repo_url = f"https://github.com/propfirmdiscounts/{REPO_NAME}"
           readme += f"""- Event: {EVENT_NAME}
           - Deals tracked: {deals} ({len(this_year)} in {season_year})
           - Firms: {len(firms)}
           - Firms with a code in the {season_year} season: {len(season)}
           - Newest deal: {newest_date}
-          - GitHub repository: [{repo_url}]({repo_url})
+          - GitHub repository: [{EVENT_NAME} Deals Repository]({repo_url})
           """
           if meta.get('tagged'):
               # The gap between these two numbers is the point of stating both:
@@ -331,9 +305,9 @@ jobs:
               readme += (f"- Deals tagged on the site: {meta['tagged']} "
                          f"({deals} of them from firms with a verified code, listed below)\n")
           if meta.get('tag_url'):
-              readme += f"- Event page: [{meta['tag_url']}]({meta['tag_url']})\n"
-          readme += ("- Full dataset: [https://github.com/propfirmdiscounts/prop-firm-discount-codes](https://github.com/propfirmdiscounts/prop-firm-discount-codes)\n"
-                     "- Deal dataset: [https://propfirmdiscount.com/api/prop-firm-events/](https://propfirmdiscount.com/api/prop-firm-events/)\n\n")
+              readme += f"- Event page: [{EVENT_NAME} Deals on PropFirmDiscount]({meta['tag_url']})\n"
+          readme += ("- Full dataset: [All Prop Firm Discount Codes Dataset](https://github.com/propfirmdiscounts/prop-firm-discount-codes)\n"
+                     "- Deal dataset: [Prop Firm Events API Record](https://propfirmdiscount.com/api/prop-firm-events/)\n\n")
 
           # FAQ headings phrased as the questions people type. Every answer is
           # assembled from fields above; nothing is asserted that the dataset
@@ -399,11 +373,11 @@ jobs:
 
           A deal is listed here because an editor tagged it for {EVENT_NAME} on the site, not because
           its dates fall near the event. A deal with no event tag appears in its firm's own dataset
-          instead: https://github.com/propfirmdiscounts
+          instead in the [PropFirmDiscount Repositories](https://github.com/propfirmdiscounts).
 
-          - Data source: [https://propfirmdiscount.com](https://propfirmdiscount.com)
-          - Event page: [{meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'}]({meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'})
-          - All firms: [https://github.com/propfirmdiscounts/prop-firm-discount-codes](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
+          - Data source: [PropFirmDiscount.com](https://propfirmdiscount.com)
+          - Event page: [{EVENT_NAME} Deals on PropFirmDiscount]({meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'})
+          - All firms: [All Prop Firms Directory](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
 
           ## Fields in `datasets/{REPO_NAME}.json`
 
@@ -444,18 +418,27 @@ jobs:
 
           ## License
 
-          Data © PropFirmDiscount. Codes may be referenced with attribution and a link to https://propfirmdiscount.com.
+          Data © PropFirmDiscount. Codes may be referenced with attribution and a link to [PropFirmDiscount.com](https://propfirmdiscount.com).
           """
 
           with open('README.md', 'w', encoding='utf-8') as f:
               f.write(readme)
 
           try:
-              cfg = open('_config.yml', encoding='utf-8').read()
-              escaped_desc = answer.replace('"', '\\"')
-              cfg = re.sub(r'(?<=description: ")[^"\n]+',
-                           lambda _: escaped_desc, cfg, count=1)
-              open('_config.yml', 'w', encoding='utf-8').write(cfg)
+              escaped_desc = as_of_sentence.replace('"', '\\"')
+              safe_title = f"{EVENT_NAME} Prop Firm Discount Codes ({now_year})".replace('"', '\\"')
+              if os.path.exists('_config.yml'):
+                  cfg = open('_config.yml', encoding='utf-8').read()
+                  if 'description: "' in cfg:
+                      cfg = re.sub(r'(?<=description: ")[^"\n]+',
+                                   lambda _: escaped_desc, cfg, count=1)
+                  else:
+                      cfg += f'\ndescription: "{escaped_desc}"\n'
+                  open('_config.yml', 'w', encoding='utf-8').write(cfg)
+              else:
+                  open('_config.yml', 'w', encoding='utf-8').write(
+                      f'title: "{safe_title}"\ndescription: "{escaped_desc}"\nurl: "https://propfirmdiscounts.github.io"\nbaseurl: "/{REPO_NAME}"\nplugins:\n  - jekyll-seo-tag\n'
+                  )
           except Exception:
               pass
 
