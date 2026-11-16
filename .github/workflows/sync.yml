@@ -215,7 +215,7 @@ jobs:
           else:
               biggest = ''
 
-          readme = f"""# {EVENT_NAME} Prop Firm Discount Codes ({now_year})
+          readme = f"""# {EVENT_NAME} Prop Firm Deals & Discount Codes ({now_year})
 
           """
 
@@ -230,10 +230,12 @@ jobs:
           # second.
           from datetime import datetime, timezone
           now_month = datetime.now(timezone.utc).strftime('%B %Y')
-          intro = (f"This {EVENT_NAME}, {deals} deals from "
-                   f"{len(firms)} prop firms are tracked, with {len(this_year)} "
-                   f"published during the {season_year} season. Every firm carries a "
-                   f"verified discount code that works year-round.")
+          intro = (f"Explore {EVENT_NAME} prop firm deals and discount codes from "
+                   f"{len(firms)} proprietary trading firms, with {deals} historical promotions "
+                   f"tracked across multiple seasons. Compare campaign-specific discounts, "
+                   f"promotional codes, and other offers, while checking each firm's standing "
+                   f"discount code separately. Every listing includes its recorded discount, "
+                   f"publication date, expiration information, and a link to the original deal.")
           readme += intro + '\n\n'
 
           if biggest:
@@ -272,7 +274,7 @@ jobs:
                          f"published, so check back for the lineup.\n\n")
 
           if top_table:
-              readme += f"""## Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}
+              readme += f"""## Prop Firms with the Highest {EVENT_NAME} Discounts {season_year}
 
           | # | Prop firm | Exclusive code | Code discount (Standing) | Latest {EVENT_NAME} deal | Deal link | Expires | Firm page |
           |---|---|---|---|---|---|---|---|
@@ -288,13 +290,24 @@ jobs:
                              f"{r.get('date_exp') or 'N/A'} | [{r['prop_firm']} Page]({r['firm_page_url']}) |\n")
               readme += "\n"
 
-          readme += (f"The newest is **{newest['title']}** from {newest['prop_firm']} — "
-                     f"{offer(newest['discount_value'])}.\n\n")
+          pub_dt = datetime.strptime(newest['date_published'], '%Y-%m-%d')
+          pub_date_formatted = f"{pub_dt.strftime('%B')} {pub_dt.day}, {pub_dt.year}"
+          deal_title = str(newest['title']).strip()
+          prefix = f"{newest['prop_firm']}: "
+          if deal_title.startswith(prefix):
+              deal_title = deal_title[len(prefix):].strip()
+          if deal_title.lower().startswith('offering '):
+              deal_title = deal_title[9:].strip()
+          exp_str = str(newest.get('date_exp') or '').lower()
+          status_text = "The offer has since ended." if ('ended' in exp_str or 'expire' in exp_str or (len(newest.get('date_exp', '')) == 10 and newest['date_exp'] < str(datetime.now(timezone.utc).date()))) else f"Offer ends: {newest.get('date_exp')}."
+          readme += (f"The latest recorded {EVENT_NAME}-tagged promotion is {newest['prop_firm']} "
+                     f"offering {deal_title}, published on {pub_date_formatted}. {status_text}\n\n")
 
           repo_url = f"https://github.com/propfirmdiscounts/{REPO_NAME}"
           readme += f"""- Event: {EVENT_NAME}
-          - Deals tracked: {deals} ({len(this_year)} in {season_year})
-          - Firms: {len(firms)}
+          - {EVENT_NAME} deals in this dataset: {deals}
+          - Firms represented: {len(firms)}
+          - Deals published in {season_year}: {len(this_year)}
           - Firms with a code in the {season_year} season: {len(season)}
           - Newest deal: {newest_date}
           - GitHub repository: [{EVENT_NAME} Deals Repository]({repo_url})
@@ -302,17 +315,18 @@ jobs:
           if meta.get('tagged'):
               # The gap between these two numbers is the point of stating both:
               # an event is bigger than the part of it that comes with a code.
-              readme += (f"- Deals tagged on the site: {meta['tagged']} "
+              readme += (f"- All {EVENT_NAME}-tagged deals on the main site: {meta['tagged']} "
                          f"({deals} of them from firms with a verified code, listed below)\n")
           if meta.get('tag_url'):
               readme += f"- Event page: [{EVENT_NAME} Deals on PropFirmDiscount]({meta['tag_url']})\n"
           readme += ("- Full dataset: [All Prop Firm Discount Codes Dataset](https://github.com/propfirmdiscounts/prop-firm-discount-codes)\n"
-                     "- Deal dataset: [Prop Firm Events API Record](https://propfirmdiscount.com/api/prop-firm-events/)\n\n")
+                     "- Deal dataset: [Prop Firm Events API Record](https://propfirmdiscount.com/api/prop-firm-events/)\n\n"
+                     f"This repository includes {EVENT_NAME}-tagged deals from firms with a verified standing discount code. The main website may contain additional {EVENT_NAME}-tagged promotions from firms that are not included in this dataset.\n\n")
 
           # FAQ headings phrased as the questions people type. Every answer is
           # assembled from fields above; nothing is asserted that the dataset
           # does not carry.
-          readme += f"""## {EVENT_NAME} prop firm deals FAQ
+          readme += f"""## {EVENT_NAME} Prop Firm Deals & Discount Codes FAQ
 
           **What is the newest {EVENT_NAME} prop firm deal?**
 
@@ -343,7 +357,7 @@ jobs:
 
           readme += f"""---
 
-          ## {EVENT_NAME} deal history
+          ## {EVENT_NAME} Prop Firm Deal History
 
           Total deals tracked: **{deals}**
 
@@ -351,7 +365,7 @@ jobs:
 
           for y in years:
               group = per_year[y]
-              readme += f"### {y} ({plural(len(group), 'deal')})\n\n"
+              readme += f"### {y} {EVENT_NAME} Deals ({plural(len(group), 'deal')})\n\n"
               readme += "| Deal Date | Firm | Title | Discount | Expires | Event | Deal Link |\n"
               readme += "|---|---|---|---|---|---|---|\n"
               for r in group:
@@ -366,10 +380,9 @@ jobs:
 
           readme += f"""---
 
-          ## About this repository
+          ## About the {EVENT_NAME} Prop Firm Deals Dataset
 
-          This repository mirrors every **{EVENT_NAME}** deal published on PropFirmDiscount.com by a
-          firm carrying a verified discount code, regenerated from the live API.
+          This dataset provides a historical record of {EVENT_NAME}-tagged promotional deals published on PropFirmDiscount.com by proprietary trading firms with recorded standing discount codes. Each record preserves the campaign's original discount details, publication date, expiration information, and related firm data. The dataset is regenerated from the PropFirmDiscount API.
 
           A deal is listed here because an editor tagged it for {EVENT_NAME} on the site, not because
           its dates fall near the event. A deal with no event tag appears in its firm's own dataset
@@ -379,7 +392,7 @@ jobs:
           - Event page: [{EVENT_NAME} Deals on PropFirmDiscount]({meta.get('tag_url') or 'https://propfirmdiscount.com/tag/' + EVENT_SLUG + '/'})
           - All firms: [All Prop Firms Directory](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
 
-          ## Fields in `datasets/{REPO_NAME}.json`
+          ## {EVENT_NAME} Prop Firm Deals Dataset: Field Definitions
 
           One row per deal. The first fields are the observation exactly as the
           PropFirmDiscount API returns it; the firm's own code fields and the
@@ -409,14 +422,14 @@ jobs:
           promotion, `discount_value` and `date_exp` describe that deal, and
           `post_url` is its page.
 
-          ## Freshness
+          ## Data Freshness & Verification
 
           The deal history above is the source of truth for what changed and when.
           Standing codes are re-verified by the PropFirmDiscount team; campaign
           codes come and go with each promotion. The most recent deal date carried
           in this file is the `Newest deal` value above.
 
-          ## License
+          ## Data License
 
           Data © PropFirmDiscount. Codes may be referenced with attribution and a link to [PropFirmDiscount.com](https://propfirmdiscount.com).
           """
@@ -426,9 +439,13 @@ jobs:
 
           try:
               escaped_desc = as_of_sentence.replace('"', '\\"')
-              safe_title = f"{EVENT_NAME} Prop Firm Discount Codes ({now_year})".replace('"', '\\"')
+              safe_title = f"{EVENT_NAME} Prop Firm Deals & Discount Codes ({now_year})".replace('"', '\\"')
               if os.path.exists('_config.yml'):
                   cfg = open('_config.yml', encoding='utf-8').read()
+                  if 'title: "' in cfg:
+                      cfg = re.sub(r'title: "[^"\n]+"', f'title: "{safe_title}"', cfg, count=1)
+                  else:
+                      cfg = f'title: "{safe_title}"\n' + cfg
                   if 'description: "' in cfg:
                       cfg = re.sub(r'(?<=description: ")[^"\n]+',
                                    lambda _: escaped_desc, cfg, count=1)
@@ -519,7 +536,7 @@ jobs:
               itemlist_data = {
                   "@context": "https://schema.org",
                   "@type": "ItemList",
-                  "name": f"Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}",
+                  "name": f"Prop Firms with the Highest {EVENT_NAME} Discounts {season_year}",
                   "numberOfItems": len(itemlist_elements),
                   "itemListElement": itemlist_elements
               }
@@ -647,7 +664,7 @@ jobs:
                                 f"{season_year} season are {biggest}.\n\n")
 
           body = (f"# {EVENT_NAME} Prop Firm Deals\n\n"
-                  f"{answer}\n\n"
+                  f"{intro}\n\n"
                   + biggest_sentence
                   + '\n'.join(facts) + "\n\n"
                   + f"Deal history: https://github.com/propfirmdiscounts/{REPO_NAME}\n\n"
@@ -804,9 +821,7 @@ jobs:
             echo "no changes"
             exit 0
           fi
-          git commit -m "Sync $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            -m "Update $EVENT_NAME deal history and README" \
-            -m "Co-Authored-By: propfirmdiscounts <73492456+propfirmdiscounts@users.noreply.github.com>"
+          git commit -m "Sync $(date -u +%Y-%m-%d)"
           git push
 
       - name: Push Hugging Face mirror
