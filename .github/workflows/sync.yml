@@ -442,6 +442,168 @@ jobs:
           except Exception:
               pass
 
+          try:
+              os.makedirs('_layouts', exist_ok=True)
+              faq_items = [
+                  {
+                      "@type": "Question",
+                      "name": f"What is the newest {EVENT_NAME} prop firm deal?",
+                      "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": f"{newest['title']} from {newest['prop_firm']} — published {newest['date_published']}. Offer: {offer(newest['discount_value'])}. {expiry(newest.get('date_exp'))}"
+                      }
+                  },
+                  {
+                      "@type": "Question",
+                      "name": "Do these firms have discount codes?",
+                      "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": f"Yes. Every one of the {len(firms)} firms listed here carries a verified discount code that works any time, with no start date and no end date." + (f" The biggest is {rate_text(top[0][0])} off with code {top[0][1]['standing_code']} at {top[0][1]['prop_firm']}." if top else "")
+                      }
+                  },
+                  {
+                      "@type": "Question",
+                      "name": "How much is off?",
+                      "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": f"The newest deal is {offer(newest['discount_value'])}." + (f" Standing discount codes among these firms run {rate_text(top[0][0])} off, and every deal in the history below states its own figure." if top else " Every deal in the history below states its own figure.")
+                      }
+                  }
+              ]
+              faq_data = {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "mainEntity": faq_items
+              }
+
+              dataset_data = {
+                  "@context": "https://schema.org",
+                  "@type": "Dataset",
+                  "name": f"{EVENT_NAME} Prop Firm Deals & Discount Codes Dataset",
+                  "description": f"{intro} {as_of_sentence}",
+                  "url": f"https://propfirmdiscounts.github.io/{REPO_NAME}/",
+                  "sameAs": meta.get('tag_url') or f"https://propfirmdiscount.com/tag/{EVENT_SLUG}/",
+                  "license": "https://propfirmdiscount.com",
+                  "creator": {
+                      "@type": "Organization",
+                      "name": "PropFirmDiscount",
+                      "url": "https://propfirmdiscount.com"
+                  },
+                  "distribution": [
+                      {
+                          "@type": "DataDownload",
+                          "encodingFormat": "application/json",
+                          "contentUrl": f"https://raw.githubusercontent.com/propfirmdiscounts/{REPO_NAME}/main/datasets/{REPO_NAME}.json"
+                      }
+                  ],
+                  "temporalCoverage": "2024/2026",
+                  "variableMeasured": [
+                      "deal_id", "prop_firm", "title", "discount_value",
+                      "standing_code", "date_published", "date_exp", "post_url"
+                  ]
+              }
+
+              itemlist_elements = []
+              for pos, (rate_val, r_item) in enumerate(top_table, 1):
+                  c_rate = pct(r_item.get('discount_value')) if 'code_state' in r_item else rate_val
+                  if c_rate is None:
+                      c_rate = rate_val
+                  itemlist_elements.append({
+                      "@type": "ListItem",
+                      "position": pos,
+                      "name": r_item['prop_firm'],
+                      "url": r_item['firm_page_url'],
+                      "description": f"{r_item['prop_firm']} discount code {r_item['standing_code']} — {rate_text(c_rate)} OFF."
+                  })
+
+              itemlist_data = {
+                  "@context": "https://schema.org",
+                  "@type": "ItemList",
+                  "name": f"Prop Firms with the Highest Discount Codes in {EVENT_NAME} {season_year}",
+                  "numberOfItems": len(itemlist_elements),
+                  "itemListElement": itemlist_elements
+              }
+
+              faq_str = json.dumps(faq_data, indent=4)
+              dataset_str = json.dumps(dataset_data, indent=4)
+              itemlist_str = json.dumps(itemlist_data, indent=4)
+
+              layout_html = f'''<!DOCTYPE html>
+<html lang="{{{{ page.lang | default: site.lang | default: "en-US" }}}}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{{{ page.title | default: site.title }}}}</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JRN9LT8NNF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){{dataLayer.push(arguments);}}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JRN9LT8NNF');
+    </script>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="https://propfirmdiscounts.github.io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://propfirmdiscounts.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://propfirmdiscounts.github.io/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://propfirmdiscounts.github.io/apple-touch-icon.png">
+    <link rel="manifest" href="https://propfirmdiscounts.github.io/site.webmanifest">
+    {{% seo title=false %}}
+    <script type="application/ld+json">
+    {{
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {{
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://propfirmdiscounts.github.io/"
+        }},
+        {{
+          "@type": "ListItem",
+          "position": 2,
+          "name": "All Prop Firms & Events",
+          "item": "https://propfirmdiscounts.github.io/prop-firm-discount-codes/"
+        }},
+        {{
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{{{ page.title | default: site.title | jsonify }}}},
+          "item": "https://propfirmdiscounts.github.io/{REPO_NAME}/"
+        }}
+      ]
+    }}
+    </script>
+    <script type="application/ld+json">
+{faq_str}
+    </script>
+    <script type="application/ld+json">
+{dataset_str}
+    </script>
+    <script type="application/ld+json">
+{itemlist_str}
+    </script>
+    <link rel="stylesheet" href="{{{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}}}">
+    {{% include head-custom.html %}}
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <nav aria-label="Breadcrumb" style="font-size: 0.9em; margin-bottom: 1.5rem; color: #57606a;">
+        <a href="https://propfirmdiscounts.github.io/">Home</a> &rsaquo;
+        <a href="https://propfirmdiscounts.github.io/prop-firm-discount-codes/">All Prop Firms &amp; Events</a> &rsaquo;
+        <span style="color: #24292f; font-weight: 500;">{{{{ page.title | default: site.title }}}}</span>
+      </nav>
+      {{{{ content }}}}
+    </div>
+  </body>
+</html>'''
+              open('_layouts/default.html', 'w', encoding='utf-8').write(layout_html)
+          except Exception:
+              pass
+
           # The Hub card is a deliberately short variant, not a copy of the
           # README. GitHub carries the full code table, history and field
           # reference; the Hub carries the one dated answer sentence, the counts
