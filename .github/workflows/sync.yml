@@ -810,8 +810,16 @@ jobs:
       - name: Commit and push
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Prop Firm Discount"
+          git config user.email "73492456+propfirmdiscounts@users.noreply.github.com"
+          # A per-repo favicon.ico was copied into every mirror by a one-off
+          # deploy script. Nothing reads it: _layouts/default.html points the
+          # icon links at the org root, so the copy served no page. Dropping it
+          # here retires the file through a normal Sync commit instead of a
+          # second hand-run push with its own message.
+          if [ -f favicon.ico ]; then
+            git rm -q --ignore-unmatch favicon.ico
+          fi
           git add -A
           # Every date written above comes from the data, so an unchanged
           # dataset produces byte-identical files and this guard stops the run
