@@ -1,6 +1,6 @@
 # World Cup Prop Firm Deals & Discount Codes (2026)
 
-Explore World Cup prop firm deals and discount codes from 12 proprietary trading firms, with 20 historical promotions tracked across multiple seasons. Compare campaign-specific discounts, promotional codes, and other offers, while checking each firm's standing discount code separately. Every listing includes its recorded discount, publication date, expiration information, and a link to the original deal.
+Explore World Cup prop firm deals and discount codes from 11 proprietary trading firms, with 19 historical promotions tracked across multiple seasons. Compare campaign-specific discounts, promotional codes, and other offers, while checking each firm's standing discount code separately. Every listing includes its recorded discount, publication date, expiration information, and a link to the original deal.
 
 As of November 2026, the biggest verified World Cup discount codes in the 2026 season are 80% OFF with code PFD at Phidias Propfirm, and 50% OFF with code PFD at FundingTraders.
 
@@ -22,13 +22,13 @@ As of November 2026, the biggest verified World Cup discount codes in the 2026 s
 The latest recorded World Cup-tagged promotion is FundingTraders offering World Cup 50% Off Evaluation Accounts and 100% Profit Split with code PFD, published on July 18, 2026. The offer has since ended.
 
 - Event: World Cup
-- World Cup deals in this dataset: 20
-- Firms represented: 12
-- Deals published in 2026: 20
-- Firms with a code in the 2026 season: 12
+- World Cup deals in this dataset: 19
+- Firms represented: 11
+- Deals published in 2026: 19
+- Firms with a code in the 2026 season: 11
 - Newest deal: 2026-07-18
 - GitHub repository: [World Cup Deals Repository](https://github.com/propfirmdiscounts/world-cup-prop-firm-deals)
-- All World Cup-tagged deals on the main site: 34 (20 of them from firms with a verified code, listed below)
+- All World Cup-tagged deals on the main site: 34 (19 of them from firms with a verified code, listed below)
 - Event page: [World Cup Deals on PropFirmDiscount](https://propfirmdiscount.com/tag/world-cup/)
 - Full dataset: [All Prop Firm Discount Codes Dataset](https://github.com/propfirmdiscounts/prop-firm-discount-codes)
 - Deal dataset: [Prop Firm Events API Record](https://propfirmdiscount.com/api/prop-firm-events/)
@@ -43,7 +43,7 @@ This repository includes World Cup-tagged deals from firms with a verified stand
 
 **Do these firms have discount codes?**
 
-Yes. Every one of the 12 firms listed here carries a verified discount code that works any time, with no start date and no end date. The biggest is 85% off with code PFD at Phidias Propfirm. The code is separate from the World Cup offer itself: the offer belongs to the campaign, the code works whatever the season.
+Yes. Every one of the 11 firms listed here carries a verified discount code that works any time, with no start date and no end date. The biggest is 85% off with code PFD at Phidias Propfirm. The code is separate from the World Cup offer itself: the offer belongs to the campaign, the code works whatever the season.
 
 **How much is off?**
 
@@ -53,9 +53,9 @@ The newest deal is 50% off. Standing discount codes among these firms run 85% of
 
 ## World Cup Prop Firm Deal History
 
-Total deals tracked: **20**
+Total deals tracked: **19**
 
-### 2026 World Cup Deals (20 deals)
+### 2026 World Cup Deals (19 deals)
 
 | Deal Date | Firm | Title | Discount | Expires | Event | Deal Link |
 |---|---|---|---|---|---|---|
@@ -68,7 +68,6 @@ Total deals tracked: **20**
 | 2026-06-23 | FundingTraders | FundingTraders: 50% Off Upfront Fee For All Programs with code PFD | 50% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/fundingtraders/fundingtraders-50-off-all-programs/) |
 | 2026-06-23 | AquaFunded | AquaFunded: World Cup Promotion: 40% Off Challenge Pricing | 40% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/aquafunded/aquafunded-world-cup-40-off-promotion/) |
 | 2026-06-17 | TX3 Funding | TX3 Funding: 30% Off All Evaluation Accounts ($5K - $300K) | 30% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/tx3-funding/tx3-funding-30-off-challenges-world-cup/) |
-| 2026-06-13 | HyroTrader | HyroTrader: World Cup: 15% Off All Evaluation Accounts | 15% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/hyrotrader/hyrotrader-world-cup-15-off/) |
 | 2026-06-12 | Forex Funds Flow | Forex Funds Flow: 15% Off All Evaluation Programs | 15% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/forex-funds-flow/forex-funds-flow-15-off-world-cup/) |
 | 2026-06-11 | Phidias Propfirm | Phidias Propfirm: 80% Off One-Time Purchases and 50% to 60% Off Evaluation Accounts with code PFD | 80% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/phidias-propfirm/phidias-propfirm-world-cup-promotion/) |
 | 2026-06-11 | Funded Trading Plus | Funded Trading Plus: 30% Off All Trading Challenges Lowers Initial Challenge Fee | 30% off | Ended | World Cup | [View Deal](https://propfirmdiscount.com/deals/funded-trading-plus/funded-trading-plus-30-off-world-cup-challenges/) |

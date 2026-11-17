@@ -4,7 +4,7 @@ World Cup prop firm deals and the discount codes of the firms that ran them.
 
 ## Dataset
 
-20 deals from 12 prop firms, newest 2026-07-18.
+19 deals from 11 prop firms, newest 2026-07-18.
 Each row states the deal, its dates, the firm's discount code, and where to redeem it.
 
 ## Links

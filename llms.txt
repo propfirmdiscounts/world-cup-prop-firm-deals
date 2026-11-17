@@ -3,7 +3,7 @@
 This dataset tracks every World Cup deal published on PropFirmDiscount.com by a
 prop firm carrying a verified discount code.
 
-Deals tracked: 20 across 12 firms. Newest deal: 2026-07-18.
+Deals tracked: 19 across 11 firms. Newest deal: 2026-07-18.
 Every deal row carries that firm's discount code, which works any time.
 
 Event page: https://propfirmdiscount.com/tag/world-cup/
