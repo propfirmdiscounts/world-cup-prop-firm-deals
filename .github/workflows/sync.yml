@@ -103,13 +103,16 @@ jobs:
           # and two runs of an unchanged dataset produce identical bytes.
           rows.sort(key=lambda r: (r['date_published'], r['deal_id']), reverse=True)
 
-          # For global firms, append " with code {code}" to deal titles
+          # For global firms, append " (code {code})" to deal titles
           for r in rows:
               if r.get('code_state') == 'standing' or r.get('code'):
                   aff_code = r.get('code') or r.get('standing_code')
                   if aff_code:
-                      suffix = f" with code {aff_code}"
+                      suffix = f" (code {aff_code})"
+                      old_suffix = f" with code {aff_code}"
                       t = str(r.get('title') or '').strip().rstrip('.')
+                      if t.lower().endswith(old_suffix.lower()):
+                          t = t[:-len(old_suffix)].rstrip()
                       if t and not t.lower().endswith(suffix.lower()):
                           r['title'] = f"{t}{suffix}"
 
